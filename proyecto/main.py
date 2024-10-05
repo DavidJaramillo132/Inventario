@@ -59,7 +59,36 @@ def ver_usuarios():
         print(f"{i} {Usuario.Usuario["nombre"]}")
         i += 1
 
-def main():
+def opciones_admin():
+    while True:
+        opcion = validar_entrada(""" 
+            Que desea hacer en el sistema
+            1. Agregar aula
+            2. eliminar aula
+            3. Agregar elemento
+            4. Eliminar elemento
+            5. Agregar Usuario.Usuario
+            6. Eliminar Usuario.Usuario
+            7. Salir""","num")
+        
+        if opcion == 1:
+            print("Por definir")
+        elif opcion == 2:
+            print("por definir")
+        elif opcion == 3:
+            print("por definir")
+        elif opcion == 4:
+            print("por definir")
+        elif opcion == 5:
+            ingresar_usuario()
+        elif opcion == 6:
+            print("Por definir")
+        elif opcion == 7:
+            break
+        else:
+            print("Pueda nada")
+    
+def opciones_supervisor():
     while True:
         opcion = validar_entrada(""" 
             Que desea hacer en el sistema
@@ -84,10 +113,17 @@ def main():
             print("Por definir")
         else:
             print("Pueda nada")
-                
-        
 
-main()
+def inicio_sesion():
+    opcion = validar_entrada("Desea ingresar como 1. administrador 2. supervisor ", "num")
+    while True:
+        if opcion == 1:
+            opciones_admin()
+        elif opcion == 2:
+            opciones_supervisor()
+    
+    
+inicio_sesion()
 
 """No tomar en cuenta"""
 # def visualizar_inventario():
