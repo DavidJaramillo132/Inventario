@@ -1,96 +1,80 @@
 import Aula
 import Elemento
-import Inventario
-import Usuario
+import Inventario as claseInventario
+import Usuario as claseUsuario
 import Historial
-
-usuarios = []
-
-def validar_entrada(mensaje, tipo):
-    while True:
-        entrada = input(mensaje) 
-        if tipo == "num" and entrada.isdigit():
-            return int(entrada)
-        elif tipo == "str" and not entrada.isdigit():
-            return entrada.title().strip()
-        else:
-            notificacion = f"Solo se aceptan {('números enteros' if tipo == 'num' else 'texto')}"
-            print(notificacion)
-
-# usuarios del sistema    
-usuario1 = Usuario.Usuario("David", "djdavidjaramillo@gmail.com", "12345", "Estudiante")
-usuario2 = Usuario.Usuario("Diego", "diegocasanova@gmail.com", "6789", "Estudiante")
-usuario3 = Usuario.Usuario("Justin", "justin@gmail.com", "123456", "Profesor")
-# Aula
-aula1 = Aula.Aula("4x4", "1", "#001", "Laboratorio")
-# sobre carga de la clase elemento
-elemento0 = Elemento.Elemento("mesa_estudiante", "mueble","buen estado", "ayer", 7, "#001","#001")
-elemento1 = Elemento.Elemento("Mesa", "mueble", "buen estado", "2024-09-21", 5, "#001", "#001")
-elemento2 = Elemento.Elemento("Mesa", "mueble", "buen estado", "2024-09-21", 3, "#001", "#002")
-nuevo_elemento = elemento1 + elemento2  
-print(nuevo_elemento)  
+import lista 
+import validaciones
 
 
-# sobre carga de la clase historial
-historial1 = Historial.Historial(usuario1, "2024-09-21", "Actualizacion del inventario")
-historial2 = Historial.Historial(usuario1, "2024-09-21", "Cambio en el sistema")
-historial3 = Historial.Historial(usuario2, "2024-09-21", "Modificacion de elementos")
 
-
-print(historial1 == historial2)  
-print(historial1 == historial3) 
-print(historial1)
 
 
 # Funciones de practica
 def ingresar_usuario():
-    cantidad_usuario = validar_entrada("Cuantos estudiantes desea ingresar? ", "num")
+    cantidad_usuario = validaciones.validar_entrada("Cuantos estudiantes desea ingresar? ", "num")
     for i in range(cantidad_usuario):
-        nombre_usuario = validar_entrada("Ingrese el nombre: ", "str")
-        email_usuario = validar_entrada("Ingrese el email: ", "str")
-        contraseña_usuario = validar_entrada("Ingrese la contrasea ", "str")
-        rango_usuario = validar_entrada("Ingrese el rango: ", "str")
-        usuarios.append({"nombre": nombre_usuario,"email":email_usuario,"contraseña": contraseña_usuario,"rango":rango_usuario })
+        nombre_usuario = validaciones.validar_entrada("Ingrese el nombre: ", "str")
+        email_usuario = validaciones.validar_entrada("Ingrese el email: ", "str")
+        contraseña_usuario = validaciones.validar_entrada("Ingrese la contrasea ", "str")
+        rango_usuario = validaciones.validar_entrada("Ingrese el rango: ", "str")
+        lista.usuarios_diccionario.append({"nombre": nombre_usuario,"email":email_usuario,"contraseña": contraseña_usuario,"rango":rango_usuario })
         
    
 def ver_usuarios():
-    for Usuario.Usuario in usuarios:
+    for claseUsuario.Usuario in lista.usuarios_diccionario:
         i = 1
-        print(f"{i} {Usuario.Usuario["nombre"]}")
+        print(f"{i} {claseUsuario.Usuario["nombre"]}")
         i += 1
+
+
+
 
 def opciones_admin():
     while True:
-        opcion = validar_entrada(""" 
-            Que desea hacer en el sistema
-            1. Agregar aula
-            2. eliminar aula
-            3. Agregar elemento
-            4. Eliminar elemento
-            5. Agregar Usuario.Usuario
-            6. Eliminar Usuario.Usuario
-            7. Salir""","num")
+        print("\n0. Salir",
+            "1. Crear nueva sala",
+            "2. agregar_elemento_a_aula",
+            "3. ingresar usuarios",
+            "4. ver_usuarios",
+            sep="\n")
         
-        if opcion == 1:
-            print("Por definir")
-        elif opcion == 2:
-            print("por definir")
-        elif opcion == 3:
-            print("por definir")
-        elif opcion == 4:
-            print("por definir")
-        elif opcion == 5:
-            ingresar_usuario()
-        elif opcion == 6:
-            print("Por definir")
-        elif opcion == 7:
+        opcion = validaciones.validar_entrada("Seleccionar opcion","num")
+        if opcion == 0:
+            print("Gracias por usar el Sistema de Atención Médica. ¡Hasta luego!")
             break
-        else:
-            print("Pueda nada")
+        
+        try:
+            
+            if opcion == 1:
+                claseUsuario.Administrador.crear_nueva_sala(claseUsuario.Administrador)
+            elif opcion == 2:
+                print("por definir")
+            elif opcion == 3:
+                claseUsuario.Administrador.agregar_elemento_a_aula(claseUsuario.Administrador, )
+            elif opcion == 4:
+                print("por definir")
+            elif opcion == 5:
+                ingresar_usuario()
+            elif opcion == 6:
+                print("Por definir")
+            elif opcion == 7:
+                return
+            elif opcion == 8:
+                ver_usuarios()
+            else:
+                print("Pueda nada")
+        except Exception as e: 
+            print(f"Error: {str(e)}")
+    
+    
+    
+    
+    
     
 def opciones_supervisor():
     while True:
-        opcion = validar_entrada(""" 
+        opcion = validaciones.validar_entrada(""" 
             Que desea hacer en el sistema
             1. Agregar aula
             2. eliminar aula
@@ -114,42 +98,25 @@ def opciones_supervisor():
         else:
             print("Pueda nada")
 
-def inicio_sesion():
-    opcion = validar_entrada("Desea ingresar como 1. administrador 2. supervisor ", "num")
+def main():
+    validaciones.imprimir_encabezado("Sistema de gestion de Inventario")
+    print("\n0. Salir",
+            "1. administrador",
+            "2. supervisor",
+            sep="\n")
+
     while True:
-        if opcion == 1:
-            opciones_admin()
-        elif opcion == 2:
-            opciones_supervisor()
+        opcion = validaciones.validar_entrada("\nEliga una opcion: ", "num")
+        try:
+            if opcion == 1:
+                opciones_admin()
+            elif opcion == 2:
+                opciones_supervisor()
+        except Exception as e:
+            print("INGRESE UN VALOR CORRECTO")
+            
     
     
-inicio_sesion()
-
-"""No tomar en cuenta"""
-# def visualizar_inventario():
-#     while True:
-#         print("\n1. Aula 201\n2. Aula 202\n3. Aula 203\n4. Aula 204\n5. Salir")
-#         opcion_aula = int(input("Elija un aula: "))
-        
-#         if opcion_aula == 1:
-#             print("\nElija el tipo de inventario: \n1. Muebles 201\n2. Electrónicos 201")
-#             opcion_inventario = int(input("Seleccione una opción: "))
-#             if opcion_inventario == 1:
-#                 print("Has seleccionado Muebles 201.")
-#             elif opcion_inventario == 2:
-#                 print("Has seleccionado Electrónicos 201.")
-#         elif opcion_aula == 2:
-#             print("\nElija el tipo de inventario: \n1. Muebles 202\n2. Electrónicos 202")
-#             opcion_inventario = int(input("Seleccione una opción: "))
-#             if opcion_inventario == 1:
-#                 print("Has seleccionado Muebles 202.")
-#             elif opcion_inventario == 2:
-#                 print("Has seleccionado Electrónicos 202.")
-#         elif opcion_aula == 5:
-#             print("Saliendo del programa.")
-#             break
-#         else:
-#             print("Opción no válida, intente de nuevo.")
+main()
 
 
-# visualizar_inventario()
