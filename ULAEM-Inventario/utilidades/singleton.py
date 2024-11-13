@@ -12,12 +12,12 @@ class UserSingleton:
             cls._instance = super(UserSingleton, cls).__new__(cls)
         # Retorna la instancia única existente.
         return cls._instance
-    
+
     # no dependa de ninguna instancia
 
     @classmethod
     def initialize(cls, tipo_usuario, cedula, nombre, email, contraseña, rango):
-        #  inicializa la instancia con datos especificos del usuario.
+        # inicializa la instancia con datos especificos del usuario.
         # Verifica si _instance es None, lo que indica que no hay instancia creada.
         if cls._instance is None:
             # Si no hay instancia, lanza una excepción indicando que debe crearse primero con get_instance
@@ -42,19 +42,7 @@ class UserSingleton:
         # Retorna la instancia única de UserSingleton.
         return cls._instance
 
-    #Retorna los datos del usuario inicializado
-    # def obtener_datos_usuario(self):
-    #     if hasattr(self, 'usuario'):
-    #         return {
-    #             'cedula': self.usuario.cedula,
-    #             'nombre': self.usuario.nombre,
-    #             'email': self.usuario.email,
-    #             'rango': self.usuario.rango
-    #         }
-    #     else:
-    #         raise Exception("Usuario no inicializado en UserSingleton.")
-        
-    # Administrador    
+  
         
     def crear_nueva_sala(self, Contenido_principal):
         self._instance.crear_nueva_sala(Contenido_principal)
@@ -95,24 +83,3 @@ class UserSingleton:
         self._instance.crear_reporte(idAula)
         
     
-
-# def singleton(cls):
-#     isinstances = dict()
-    
-#     def wrap():
-#         if cls not in isinstances:
-#             isinstances[cls] = cls(*args, **kwargs)
-        
-#         return isinstances[cls]
-#     return wrap
-
-# @singleton
-# class UserSingleton(object):
-#     def __init__(self,nombre):
-#         self.nombre = nombre
-
-
-# user1 = UserSingleton("David")
-# user2 = UserSingleton("Javier")
-    
-# print(user1 is user2)

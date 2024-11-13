@@ -10,6 +10,7 @@ from UI.notificaciones import Notificaciones_aviso
 from Database.querySQL import operacionSQL
 from UI.subtablas import Subtabla
 from UI.Elemento import ElementoFactory
+from utilidades.widget import WidgetCtk
 
 
 class InterfazUsuario(ABC): 
@@ -27,7 +28,8 @@ class InterfazUsuario(ABC):
         self.notificacion = Notificaciones_aviso()
         self.operacionesSQL = operacionSQL()
         self.factory = ElementoFactory()
-    
+        self.widget = WidgetCtk()
+
     @property
     def contraseña(self):
         return self.__contraseña
@@ -47,7 +49,7 @@ class Supervisor(InterfazUsuario):
         self.utilidades_interfaz.limpiar_frame_principal(contenido_principal)
 
         # Frame para la tabla de datos
-        table_frame = ctk.CTkScrollableFrame(contenido_principal, fg_color=self.colores.obtener_color_principal(), width=580)
+        table_frame = self.widget.crear_scrollable_frame(contenido_principal)
         table_frame.pack(side="top", fill="both", expand=True, padx=10, pady=10, anchor="center")
         table_frame.pack_configure(anchor="center")
         
@@ -66,7 +68,7 @@ class Supervisor(InterfazUsuario):
             tabla.agregar_fila(fila_datos)
 
             # boton para mostrar la descripción del elemento
-            btn_descripcion = ctk.CTkButton(table_frame, text="Descripcion", fg_color=self.colores.obtener_color_principal(),
+            btn_descripcion = self.widget.crear_boton(table_frame, "Descripcion",
                 hover_color=self.colores.obtener_color_botones(),
                 command=lambda elemento=elemento: mostrar_descripcion(elemento)
             )
@@ -83,8 +85,10 @@ class Supervisor(InterfazUsuario):
     def ver_comentarios(self, contenido_principal, idAula):
         self.utilidades_interfaz.limpiar_frame_principal(contenido_principal)
 
+        # freme_princial = self.widget.crear_frame(contenido_principal)
+        # freme_princial.pack(pady = 5,expand=True, anchor="center")
         # Frame para la tabla de datos
-        table_frame = ctk.CTkScrollableFrame(contenido_principal, fg_color=self.colores.obtener_color_principal(), width=580)
+        table_frame = self.widget.crear_scrollable_frame(contenido_principal)
         table_frame.pack(side="top", fill="both", expand=True, padx=10, pady=10, anchor="center")
         table_frame.pack_configure(anchor="center")
 
@@ -98,23 +102,21 @@ class Supervisor(InterfazUsuario):
             tabla.agregar_fila(columnas_nombre)
 
         # Botón para agregar comentarios
-        btn_comentario = ctk.CTkButton(table_frame, text="Agregar Comentarios", fg_color=self.colores.obtener_color_principal(), 
-                                    hover_color=self.colores.obtener_color_botones(),
-                                    command=lambda: self.agregar_comentario(idAula, contenido_principal))
+        btn_comentario = self.widget.crear_boton(table_frame, "Agregar Comentarios",
+                                    lambda: self.agregar_comentario(idAula, contenido_principal))
         btn_comentario.grid(row=len(resultados) + 1, column=0, columnspan=3, padx=2, pady=5) 
 
 
     def agregar_comentario(self, idAula, contenido_principal):
         self.utilidades_interfaz.limpiar_frame_principal(contenido_principal)
 
-        comentario_frame = ctk.CTkScrollableFrame(contenido_principal, fg_color=self.colores.obtener_color_principal(), width=580)
+        comentario_frame = self.widget.crear_scrollable_frame(contenido_principal)
         comentario_frame.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
-        label_comentario = ctk.CTkLabel(comentario_frame, text="Comentario", font=self.fuentes.obtener_fuente_titulos_subtitulos())
+        label_comentario = self.widget.crear_label_titulo_subtitulos(comentario_frame, "Comentario")
         label_comentario.pack(pady=10)
 
-        entry_comentario = ctk.CTkEntry(comentario_frame, height=200, width=500, fg_color=self.colores.obtener_color_principal(), 
-                                        border_width=10, border_color="#0D1822")
+        entry_comentario = self.widget.crear_entry(comentario_frame, False)
         entry_comentario.pack(padx=10, pady=10)
 
         def agregar(contenido_principal, idAula):
@@ -126,9 +128,8 @@ class Supervisor(InterfazUsuario):
             self.ver_comentarios(contenido_principal, idAula)
 
         # Boton para agregar un comentario a la base de datos
-        button_crear_comentario = ctk.CTkButton(comentario_frame, text="Agregar comentario", font=self.fuentes.obtener_fuente_textos(), 
-                                                fg_color=self.colores.obtener_color_principal(), hover_color=self.colores.obtener_color_botones(),
-                                            command=lambda: agregar(contenido_principal, idAula))
+        button_crear_comentario = self.widget.crear_boton(comentario_frame, "Agregar comentario", 
+                                            lambda: agregar(contenido_principal, idAula))
         button_crear_comentario.pack(pady=20)  
 
     
@@ -136,63 +137,43 @@ class Supervisor(InterfazUsuario):
         # Limpia la ventana principal de contenido previo
         self.utilidades_interfaz.limpiar_frame_principal(contenido_principal)
 
-        ctk.CTkLabel(contenido_principal, text="Perfil de Usuario", font=self.fuentes.obtener_fuente_textos()).pack(pady=10)
+        self.widget.crear_label_titulo_subtitulos(contenido_principal, "Perfil de Usuario").pack(pady=10)
 
             # Entrada para nombre
-        ctk.CTkLabel(contenido_principal, text="Nombre del usuario", font=self.fuentes.obtener_fuente_textos()).pack()
-        entry_nombre = ctk.CTkEntry(contenido_principal, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        self.widget.crear_label_texto_normal(contenido_principal, "Nombre del usuario").pack()
+        entry_nombre = self.widget.crear_entry(contenido_principal, False)
         entry_nombre.insert(0, self.nombre)
         entry_nombre.configure(state="readonly")
         entry_nombre.pack(pady=5)
 
             # Entrada para email
-        ctk.CTkLabel(contenido_principal, text="Email", font=self.fuentes.obtener_fuente_textos()).pack()
-        entry_email = ctk.CTkEntry(contenido_principal, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        self.widget.crear_label_texto_normal(contenido_principal, "Email").pack()
+        entry_email = self.widget.crear_entry(contenido_principal, False)
         entry_email.insert(0, self._email)
         entry_email.configure(state="readonly")
         entry_email.pack(pady=5)
 
             # Entrada para contraseña
-        ctk.CTkLabel(contenido_principal, text="Contraseña", font=self.fuentes.obtener_fuente_textos()).pack()
-        entry_contraseña = ctk.CTkEntry(contenido_principal, show="*", height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        self.widget.crear_label_texto_normal(contenido_principal, "Contraseña").pack()
+        entry_contraseña = self.widget.crear_entry(contenido_principal, False)
         entry_contraseña.insert(0, self.contraseña)
         entry_contraseña.configure(state="readonly")
         entry_contraseña.pack(pady=5)
 
             # Entrada para rango
-        ctk.CTkLabel(contenido_principal, text="Rango", font=self.fuentes.obtener_fuente_textos()).pack()
-        entry_rango = ctk.CTkEntry(contenido_principal, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        self.widget.crear_label_texto_normal(contenido_principal, "Rango").pack()
+        entry_rango = self.widget.crear_entry(contenido_principal, False)
         entry_rango.insert(0, self.rango)
         entry_rango.configure(state="readonly")
         entry_rango.pack(pady=5)
-
-            # Funcion para modificar el usuario
-        def habilitar_edicion():
-            entry_nombre.configure(state="normal")
-            entry_email.configure(state="normal")
-            entry_contraseña.configure(state="normal")
-            entry_rango.configure(state="normal")
-
-            # boton para habilitar la edicion de perfil
-        btn_editar = ctk.CTkButton(contenido_principal, text="Editar Perfil", command=habilitar_edicion)
+        # boton para habilitar la edicion de perfil
+        btn_editar = self.widget.crear_boton(contenido_principal, "Editar Perfil", 
+                                            lambda: self.utilidades_interfaz.habilitar_edicion(entry_nombre, entry_email, entry_contraseña, entry_rango))
         btn_editar.pack(pady=10)
 
-            # Botón para guardar los cambios
-        def guardar_cambios():
-            nuevo_nombre = entry_nombre.get()
-            nuevo_email = entry_email.get()
-            nueva_contraseña = entry_contraseña.get()
-            nuevo_rango = entry_rango.get()
-
-            try:
-                self.operacionesSQL.actualizar_valores(nuevo_nombre, nuevo_email, nueva_contraseña, nuevo_rango, self.cedula)
-
-                self.notificacion.show_info("Datos actualizados", "Usuario modificado correctamente")
-            except Exception as e:
-                self.notificacion.show_error("Error", f"No se pudo modificar el usuario: {e}")
-
             # Botón de guardar solo se muestra si se habilita la edición
-        btn_guardar = ctk.CTkButton(contenido_principal, text="Guardar Cambios", command=guardar_cambios)
+        btn_guardar = self.widget.crear_boton(contenido_principal, "Guardar Cambios", 
+                                            lambda: self.utilidades_interfaz.guardar_cambios(entry_nombre, entry_email, entry_contraseña, entry_rango, self.cedula))
         btn_guardar.pack(pady=20)
 
     def crear_reporte(self, idAula):
@@ -227,6 +208,8 @@ class Supervisor(InterfazUsuario):
         nombre_archivo = f"Reporte_Aula_{idAula}.pdf"
         pdf.output(nombre_archivo)
         
+
+        
     
 class Administrador(InterfazUsuario):
     def __init__(self, cedula, nombre, email, contraseña, rango):
@@ -234,46 +217,50 @@ class Administrador(InterfazUsuario):
     
     
     def crear_nueva_sala(self, contenido_principal):
+        # Limpiar el contenido previo en el frame principal
         self.utilidades_interfaz.limpiar_frame_principal(contenido_principal)
 
-        # Seccion de registro
-        frame_registro = ctk.CTkFrame(contenido_principal, fg_color=self.colores.obtener_color_principal())
-        frame_registro.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
+        # Frame contenedor central
+        frame_contenedor = ctk.CTkFrame(contenido_principal)
+        frame_contenedor.pack(fill="both", expand=True)  # Ocupar todo el espacio y centrar
 
-        label_register = ctk.CTkLabel(frame_registro, text="Crear Aula", font=self.fuentes.obtener_fuente_titulos_subtitulos())
-        label_register.pack(pady=10)
+        # Sección de registro
+        frame_registro = self.widget.crear_frame(frame_contenedor)
+        frame_registro.pack(anchor="center", fill=ctk.BOTH, expand=True, padx=10, pady=10)  # Centrar y agregar padding
 
-        # crear un frame interno para organizar en dos columnas
-        frame_form = ctk.CTkFrame(frame_registro, fg_color=self.colores.obtener_color_principal())
-        frame_form.pack(pady=20, padx=10)
+        # Título de registro
+        label_register = self.widget.crear_label_titulo_subtitulos(frame_registro, "Crear Aula")
+        label_register.pack(anchor="center", pady=10)  # Centrar el título
 
-        # id_aula
-        label_id_aula = ctk.CTkLabel(frame_form, text="ingrese el ID del aula: ", font=self.fuentes.obtener_fuente_textos())
+        # Crear un frame interno para organizar en dos columnas
+        frame_form = self.widget.crear_frame(frame_registro)
+        frame_form.pack(anchor="center", pady=20, padx=10)  # Centrar el frame_form dentro de frame_registro
+
+        # ID del aula
+        label_id_aula = self.widget.crear_label_texto_normal(frame_form, "Ingrese el ID del aula: ")
         label_id_aula.grid(row=0, column=0, padx=10, pady=10, sticky="w")
         
-        entry_id_aula = ctk.CTkEntry(frame_form, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        entry_id_aula = self.widget.crear_entry(frame_form, False)
         entry_id_aula.grid(row=0, column=1, padx=10, pady=10)
 
-        # tipo
-        label_tipo = ctk.CTkLabel(frame_form, text="Ingrese el tipo de sala:", font=self.fuentes.obtener_fuente_textos())
+        # Tipo de sala
+        label_tipo = self.widget.crear_label_texto_normal(frame_form, "Ingrese el tipo de sala:")
         label_tipo.grid(row=1, column=0, padx=10, pady=10, sticky="w")
         
         opciones = ["Laboratorio", "Docencia", "Clase"]
-        entry_tipo = ctk.CTkComboBox(frame_form, values=opciones, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        entry_tipo = self.widget.crear_combobox(frame_form, opciones)
         entry_tipo.grid(row=1, column=1, padx=10, pady=10)
         
-        # Llamar a la funcion para agregar un aula a la db
-        button_crear_sala = ctk.CTkButton(frame_form, text="Crear Sala", font=self.fuentes.obtener_fuente_textos(), fg_color=self.colores.obtener_color_principal(), hover_color=self.colores.obtener_color_botones(),
-                                     command=lambda: agregar_nueva_aula())
-        button_crear_sala.grid(row=5, column=1, pady=20)  
+        # Botón para crear el aula
+        button_crear_sala = self.widget.crear_boton(frame_form, "Crear Sala", lambda: agregar_nueva_aula())
+        button_crear_sala.grid(row=5, column=1, pady=20, sticky="e")  # Alinear a la derecha
+
         
         def agregar_nueva_aula():
             id_aula = entry_id_aula.get()
-            # size = entry_size.get()
             tipo = entry_tipo.get()
             
             self.validar.validar_numero(id_aula)
-            # self.validar.validar_numero(size)
             
             self.operacionesSQL.crear_aula(id_aula, tipo)
             
@@ -288,47 +275,47 @@ class Administrador(InterfazUsuario):
         self.utilidades_interfaz.limpiar_frame_principal(contenido_principal)
 
         # Seccion de registro
-        frame_agregar = ctk.CTkFrame(contenido_principal, fg_color=self.colores.obtener_color_principal())
+        frame_agregar = self.widget.crear_frame(contenido_principal)
         frame_agregar.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
 
-        label_register = ctk.CTkLabel(frame_agregar, text="Agregar Elemento", font=self.fuentes.obtener_fuente_titulos_subtitulos())
+        label_register = self.widget.crear_label_titulo_subtitulos(frame_agregar, "Agregar Elemento")
         label_register.pack(pady=10)
 
         # crear un frame interno para organizar en dos columnas
-        frame_form = ctk.CTkFrame(frame_agregar, fg_color=self.colores.obtener_color_principal())
+        frame_form = self.widget.crear_frame(frame_agregar)
         frame_form.pack(pady=20, padx=10)
         
         # Nombre
-        label_nombre = ctk.CTkLabel(frame_form, text="Nombre del elemento", font=self.fuentes.obtener_fuente_textos())
+        label_nombre = self.widget.crear_label_texto_normal(frame_form, "Nombre del elemento")
         label_nombre.grid(row=0, column=0, padx=10, pady=10, sticky="w")
         
 
-        entry_nombre = ctk.CTkEntry(frame_form, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        entry_nombre = self.widget.crear_entry(frame_form, False)
         entry_nombre.grid(row=0, column=1, padx=10, pady=10)
         
         #tipo
-        label_tipo = ctk.CTkLabel(frame_form, text="Tipo de elemento", font=self.fuentes.obtener_fuente_textos())
+        label_tipo = self.widget.crear_label_texto_normal(frame_form, "Tipo de elemento")
         label_tipo.grid(row=1, column=0, padx=10, pady=10, sticky="w")
         
         tipo = ["Mueble", "Electrodomestico"]
-        entry_tipo = ctk.CTkComboBox(frame_form, values=tipo, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        entry_tipo = self.widget.crear_combobox(frame_form, tipo)
         entry_tipo.grid(row=1, column=1, padx=10, pady=10)
         
         #estado del elemento
-        label_estado = ctk.CTkLabel(frame_form, text="Nombre del elemento", font=self.fuentes.obtener_fuente_textos())
+        label_estado = self.widget.crear_label_texto_normal(frame_form, "Nombre del elemento")
         label_estado.grid(row=2, column=0, padx=10, pady=10, sticky="w")
         
         estado = ["Malo", "Regular", "Bueno", "Exelente"]
-        entry_estado = ctk.CTkComboBox(frame_form, values=estado, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        entry_estado = self.widget.crear_combobox(frame_form, estado)
         entry_estado.grid(row=2, column=1, padx=10, pady=10)
         
         
         #fecha de adquisicion
-        label_fecha = ctk.CTkLabel(frame_form, text="Fecha de adquisición", font=self.fuentes.obtener_fuente_textos())
+        label_fecha = self.widget.crear_label_texto_normal(frame_form, "Fecha de adquisición")
         label_fecha.grid(row=3, column=0, padx=10, pady=10, sticky="w")
         
         # Entrada de fecha con calendario emergente
-        entry_fecha = ctk.CTkEntry(frame_form, placeholder_text="Seleccione fecha", height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=2)
+        entry_fecha = self.widget.crear_entry(frame_form, False)
         entry_fecha.grid(row=3, column=1, padx=10, pady=10)
 
         # Función para abrir el calendario y seleccionar una fecha
@@ -346,23 +333,23 @@ class Administrador(InterfazUsuario):
                 entry_fecha.insert(0, fecha_seleccionada)
                 top_calendario.destroy()
 
-            boton_seleccionar = tk.Button(top_calendario, text="Seleccionar", command=seleccionar_fecha)
+            boton_seleccionar = self.widget.crear_boton(top_calendario, "Seleccionar", lambda: seleccionar_fecha())
             boton_seleccionar.pack(pady=10)
 
         # Asociar el calendario al hacer clic en el campo de entrada de fecha
         entry_fecha.bind("<Button-1>", lambda e: abrir_calendario())
         
         #cantidad
-        label_numero = ctk.CTkLabel(frame_form, text="Ingrese la cantidad", font=self.fuentes.obtener_fuente_textos())
+        label_numero = self.widget.crear_label_texto_normal(frame_form, "Ingrese la cantidad")
         label_numero.grid(row=4, column=0, padx=10, pady=10, sticky="w")
         
         # Entrada de fecha con calendario emergente
-        entry_numero = ctk.CTkEntry(frame_form, validate="key", height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=2)        
+        entry_numero = self.widget.crear_entry(frame_form, False)        
         entry_numero.grid(row=4, column=1, padx=10, pady=10)
         
         # Llamar a la funcion para agregar el elemento
-        button_crear_sala = ctk.CTkButton(frame_form, text="Agregar", font=self.fuentes.obtener_fuente_textos(), fg_color=self.colores.obtener_color_principal(), hover_color=self.colores.obtener_color_botones(),
-                                     command=lambda: agregar_elemento(id_aula))
+        button_crear_sala = self.widget.crear_boton(frame_form, "Agregar",
+                                    lambda: agregar_elemento(id_aula))
         button_crear_sala.grid(row=5, column=1, pady=20)  
          
         def agregar_elemento(id_aula):
@@ -400,20 +387,19 @@ class Administrador(InterfazUsuario):
         self.utilidades_interfaz.limpiar_frame_principal(contenido_principal)
 
         # Frame para la tabla de datos
-        table_frame = ctk.CTkScrollableFrame(contenido_principal, fg_color=self.colores.obtener_color_principal(), width=580)
+# Correcto: solo pasar 'side' y otros parámetros en el pack
+        table_frame = self.widget.crear_scrollable_frame(contenido_principal)
         table_frame.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
+
         # Encabezados de columna
-        columns = ["Nombre", "Tipo", "Estado", "Fecha De Adquisicion", "Cantidad"]
-        for col in columns:
-            label = ctk.CTkLabel(table_frame, text=col, width=80)
-            label.grid(row=0, column=columns.index(col), padx=5, pady=5)
+        # columns = ["Nombre", "Tipo", "Estado", "Fecha De Adquisicion", "Cantidad"]
         
         # Funcion para actualizar la tabla después de cada eliminación
         def actualizar_tabla(idAula):
             # Limpiar el contenido previo (ignorando encabezados de columna)
-            for widget in table_frame.winfo_children()[len(columns):]:
-                widget.destroy()
+            # for widget in table_frame.winfo_children()[len(columns):]:
+            #     widget.destroy()
 
             # Obtener los elementos desde la base de datos
             resultados = self.operacionesSQL.obtener_elementos(idAula)
@@ -427,12 +413,8 @@ class Administrador(InterfazUsuario):
                 tabla.agregar_fila(fila_datos)
 
                 # Botón para eliminar el elemento
-                btn_eliminar = ctk.CTkButton(
-                    table_frame,
-                    text="Eliminar",
-                    fg_color=self.colores.obtener_color_principal(),
-                    hover_color=self.colores.obtener_color_botones(),
-                    command=lambda IdElemento=IdElemento: eliminar(IdElemento, idAula)
+                btn_eliminar = self.widget.crear_boton(table_frame, "Eliminar",
+                    lambda IdElemento=IdElemento: eliminar(IdElemento, idAula)
                 )
                 # Posicionar el botón de "Eliminar" en la columna de acciones
                 btn_eliminar.grid(row=tabla.frame_padre.grid_size()[1] - 1, column=5, padx=2)
@@ -457,55 +439,55 @@ class Administrador(InterfazUsuario):
         self.utilidades_interfaz.limpiar_frame_principal(contenido_principal)        
 
         # Seccion de registro
-        frame_agregar = ctk.CTkFrame(contenido_principal, fg_color=self.colores.obtener_color_principal())
+        frame_agregar = self.widget.crear_frame(contenido_principal)
         frame_agregar.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
 
-        label_register = ctk.CTkLabel(frame_agregar, text="Crear nuevo usuario", font=self.fuentes.obtener_fuente_titulos_subtitulos())
+        label_register = self.widget.crear_label_titulo_subtitulos(frame_agregar, "Crear nuevo usuario")
         label_register.pack(pady=10)
 
         # crear un frame interno para organizar en dos columnas
-        frame_form = ctk.CTkFrame(frame_agregar, fg_color=self.colores.obtener_color_principal())
+        frame_form = self.widget.crear_frame(frame_agregar)
         frame_form.pack(pady=20, padx=10)
         
         # Cedula
-        label_cedula = ctk.CTkLabel(frame_form, text="Cedula del usuario", font=self.fuentes.obtener_fuente_textos())
+        label_cedula = self.widget.crear_label_texto_normal(frame_form, "Cedula del usuario")
         label_cedula.grid(row=0, column=0, padx=10, pady=10, sticky="w")
         
-        entry_cedula = ctk.CTkEntry(frame_form, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        entry_cedula = self.widget.crear_entry(frame_form, False)
         entry_cedula.grid(row=0, column=1, padx=10, pady=10)
         
         #Nombre
-        label_nombre = ctk.CTkLabel(frame_form, text="Nombre del usuario", font=self.fuentes.obtener_fuente_textos())
+        label_nombre = self.widget.crear_label_texto_normal(frame_form, "Nombre del usuario")
         label_nombre.grid(row=1, column=0, padx=10, pady=10, sticky="w")
         
-        entry_nombre = ctk.CTkEntry(frame_form, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        entry_nombre = self.widget.crear_entry(frame_form, False)
         entry_nombre.grid(row=1, column=1, padx=10, pady=10) 
         
         #Email
-        label_email = ctk.CTkLabel(frame_form, text="Email del usuario nuevo", font=self.fuentes.obtener_fuente_textos())
+        label_email = self.widget.crear_label_texto_normal(frame_form, "Email del usuario nuevo")
         label_email.grid(row=2, column=0, padx=10, pady=10, sticky="w")
         
-        entry_email = ctk.CTkEntry(frame_form, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        entry_email = self.widget.crear_entry(frame_form, False)
         entry_email.grid(row=2, column=1, padx=10, pady=10) 
         
         #contraseña
-        label_password = ctk.CTkLabel(frame_form, text="contraseña", font=self.fuentes.obtener_fuente_textos())
+        label_password = self.widget.crear_label_texto_normal(frame_form, "contraseña")
         label_password.grid(row=3, column=0, padx=10, pady=10, sticky="w")
         
-        entry_password = ctk.CTkEntry(frame_form, height=50, width=200, fg_color=self.colores.obtener_color_principal(), show="*", border_width=10, border_color="#0D1822")
+        entry_password = self.widget.crear_entry(frame_form, True)
         entry_password.grid(row=3, column=1, padx=10, pady=10) 
         
         #rango
-        label_rango = ctk.CTkLabel(frame_form, text="Rango del usuario", font=self.fuentes.obtener_fuente_textos())
+        label_rango = self.widget.crear_label_texto_normal(frame_form, "Rango del usuario")
         label_rango.grid(row=4, column=0, padx=10, pady=10, sticky="w")
         
         rangos = ["Software", "IT", "Profesor", "ADMIN"]
-        entry_rango = ctk.CTkComboBox(frame_form, values=rangos, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        entry_rango = self.widget.crear_combobox(frame_form, rangos)
         entry_rango.grid(row=4, column=1, padx=10, pady=10) 
         
         # Llamar a la funcion para agregar el elemento
-        button_crear_sala = ctk.CTkButton(frame_form, text="Agregar", font=self.fuentes.obtener_fuente_textos(), fg_color=self.colores.obtener_color_principal(), hover_color=self.colores.obtener_color_botones(),
-                                     command=lambda: agregar_usuario())
+        button_crear_sala = self.widget.crear_boton(frame_form, "Agregar",
+                                    lambda: agregar_usuario())
         button_crear_sala.grid(row=5, column=1, pady=20)  
         
         def agregar_usuario():
@@ -514,7 +496,6 @@ class Administrador(InterfazUsuario):
             email = entry_email.get()
             password = entry_password.get()
             rango = entry_rango.get()
-
 
             self.validar.validar_cedula(cedula)
             self.validar.validar_texto(nombre)
@@ -533,14 +514,14 @@ class Administrador(InterfazUsuario):
         self.utilidades_interfaz.limpiar_frame_principal(contenido_principal)
 
         # Seccion de registro
-        frame_agregar = ctk.CTkFrame(contenido_principal, fg_color=self.colores.obtener_color_principal())
+        frame_agregar = self.widget.crear_frame(contenido_principal)
         frame_agregar.pack(fill=ctk.BOTH, expand=True, padx=10, pady=10)
 
-        label_register = ctk.CTkLabel(frame_agregar, text="Eliminar usuario", font=self.fuentes.obtener_fuente_titulos_subtitulos())
+        label_register = self.widget.crear_label_titulo_subtitulos(frame_agregar, "Eliminar usuario")
         label_register.pack(pady=10)
 
         # crear un frame interno para organizar
-        tabla_frame = ctk.CTkFrame(frame_agregar, fg_color=self.colores.obtener_color_principal())
+        tabla_frame = self.widget.crear_frame(frame_agregar)
         tabla_frame.pack(pady=20, padx=10)
         
 
@@ -560,16 +541,14 @@ class Administrador(InterfazUsuario):
                 tabla.agregar_fila(fila_datos)
 
                 # Botón para eliminar el usuario
-                btn_eliminar = ctk.CTkButton(tabla_frame,text="Eliminar",fg_color=self.colores.obtener_color_principal(),
-                    hover_color=self.colores.obtener_color_botones(),
-                    command=lambda cedula=cedula: eliminar(cedula)
+                btn_eliminar = self.widget.crear_boton(tabla_frame,"Eliminar",
+                    lambda cedula=cedula: eliminar(cedula)
                 )
                 btn_eliminar.grid(row=tabla.frame_padre.grid_size()[1] - 1, column=5, padx=2)
 
                 # Botón para modificar el usuario
-                btn_modificar = ctk.CTkButton(tabla_frame,text="Modificar Usuario",fg_color=self.colores.obtener_color_principal(),
-                    hover_color=self.colores.obtener_color_botones(),
-                    command=lambda contenido_principal=contenido_principal, cedula=cedula, nombre=nombre, email=email, contraseña=contraseña, rango=rango: self.modificar_usuario(contenido_principal, cedula, nombre, email, contraseña, rango)
+                btn_modificar = self.widget.crear_boton(tabla_frame,"Modificar Usuario",
+                    lambda contenido_principal=contenido_principal, cedula=cedula, nombre=nombre, email=email, contraseña=contraseña, rango=rango: self.modificar_usuario(contenido_principal, cedula, nombre, email, contraseña, rango)
                 )
                 btn_modificar.grid(row=tabla.frame_padre.grid_size()[1] - 1, column=6, padx=2)
 
@@ -591,29 +570,29 @@ class Administrador(InterfazUsuario):
     def modificar_usuario(self, contenido_principal, cedula, nombre, email, contraseña, rango):
         self.utilidades_interfaz.limpiar_frame_principal(contenido_principal)            
             # Crea los campos de entrada para cada valor a modificar
-        ctk.CTkLabel(contenido_principal, text="Modificar Usuario", font=self.fuentes.obtener_fuente_textos()).pack(pady=10)
+        self.widget.crear_label_texto_normal(contenido_principal, "Modificar Usuario").pack(pady=10)
 
         # Entrada para nombre
-        ctk.CTkLabel(contenido_principal, text="Nombre", font=self.fuentes.obtener_fuente_textos()).pack()
-        entry_nombre = ctk.CTkEntry(contenido_principal, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        self.widget.crear_label_texto_normal(contenido_principal, "Nombre").pack()
+        entry_nombre = self.widget.crear_entry(contenido_principal)
         entry_nombre.insert(0, nombre)  # Muestra el valor actual
         entry_nombre.pack(pady=5)
 
             # Entrada para email
-        ctk.CTkLabel(contenido_principal, text="Email", font=self.fuentes.obtener_fuente_textos()).pack()
-        entry_email = ctk.CTkEntry(contenido_principal, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        self.widget.crear_label_texto_normal(contenido_principal, "Email").pack()
+        entry_email = self.widget.crear_entry(contenido_principal)
         entry_email.insert(0, email)
         entry_email.pack(pady=5)
 
             # Entrada para contraseña
-        ctk.CTkLabel(contenido_principal, text="Contraseña", font=self.fuentes.obtener_fuente_textos()).pack()
-        entry_contraseña = ctk.CTkEntry(contenido_principal, show="*", height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        self.widget.crear_label_texto_normal(contenido_principal, "Contraseña").pack()
+        entry_contraseña = self.widget.crear_entry(contenido_principal, show="*")
         entry_contraseña.insert(0, contraseña)
         entry_contraseña.pack(pady=5)
 
         # Entrada para rango
-        ctk.CTkLabel(contenido_principal, text="Rango", font=self.fuentes.obtener_fuente_textos()).pack()
-        entry_rango = ctk.CTkEntry(contenido_principal, height=50, width=200, fg_color=self.colores.obtener_color_principal(), border_width=10, border_color="#0D1822")
+        self.widget.crear_label_texto_normal(contenido_principal, "Rango").pack()
+        entry_rango = self.widget.crear_entry(contenido_principal)
         entry_rango.insert(0, rango)
         entry_rango.pack(pady=5)
 
@@ -633,7 +612,7 @@ class Administrador(InterfazUsuario):
             except Exception as e:
                 self.notificacion.show_error("Error", f"No se pudo modificar el usuario: {e}")
 
-        btn_guardar = ctk.CTkButton(contenido_principal, text="Guardar Cambios", command=guardar_cambios)
+        btn_guardar = self.widget.crear_boton(contenido_principal, "Guardar Cambios", lambda: guardar_cambios())
         btn_guardar.pack(pady=20)
 
         
@@ -641,7 +620,7 @@ class Administrador(InterfazUsuario):
         self.utilidades_interfaz.limpiar_frame_principal(contenido_principal)
 
         # Frame para la tabla de datos
-        table_frame = ctk.CTkScrollableFrame(contenido_principal, fg_color=self.colores.obtener_color_principal(), width=580)
+        table_frame = ctk.CTkScrollableFrame(contenido_principal, width=580)
         table_frame.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
         # Encabezados de columna

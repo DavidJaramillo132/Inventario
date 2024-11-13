@@ -14,7 +14,7 @@ class App:
         self.iniciarUI()
         
     def iniciarUI(self):
-        # Contenedor de navegación
+        # Contenedor de navegacin
         navegacion = self.crear_contenedor_navegacion()
         
         # Contenedor principal de contenido
@@ -26,12 +26,12 @@ class App:
     
     # Crea los contenedores donde se agregaran y quitaran los widget
     def crear_contenedor_navegacion(self):
-        navegacion = ctk.CTkFrame(self.root, fg_color=self.color.color_principal, height=50)
+        navegacion = ctk.CTkFrame(self.root, fg_color=self.color.obtener_color_principal(), height=50)
         navegacion.pack(side="left", fill="y")
         return navegacion
     
     def crear_contenedor_contenido(self):
-        contenido_principal = ctk.CTkFrame(self.root, fg_color=self.color.color_principal)
+        contenido_principal = ctk.CTkFrame(self.root, fg_color=self.color.obtener_color_principal())
         contenido_principal.pack(fill="both", expand=True)
         return contenido_principal
 

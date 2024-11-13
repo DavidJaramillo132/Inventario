@@ -82,7 +82,7 @@ class operacionSQL:
             """, (idAula))
         return self.db.fetchall()
     
-    # Función para eliminar un elemento
+    # Funcion para eliminar un elemento
     def eliminar_elemento(self,IdElemento):
         self.db.execute("DELETE FROM Elemento WHERE IdElemento = ?", (IdElemento))
         self.db.commit()
@@ -115,7 +115,7 @@ class operacionSQL:
             """)
         return self.db.fetchall()
         
-    # Función para eliminar un usuario
+    # Funcion para eliminar un usuario
     def eliminar_usuario(self, cedula):
         self.db.execute("delete from Usuario where cedula = ?",(cedula))
         self.db.commit()
