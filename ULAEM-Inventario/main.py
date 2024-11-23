@@ -1,40 +1,31 @@
 import customtkinter as ctk
-from utilidades.ConfiguraconApp import ConfigurarColores
-from UI.interfaz_login_register import LoginRegister  
-# import Database.conexionDB
+from UI.controllers import ControladorLogin
+from assets import Colores
+from UI.gestores import GestorErrores
 
 
 # Clase principal de la aplicación
 class App:
     def __init__(self):
         self.root = ctk.CTk()
-        self.root.geometry("1000x800")
-        self.root.title("Sistema de inventario")
-        self.color = ConfigurarColores()
-        self.iniciarUI()
-        
-    def iniciarUI(self):
-        # Contenedor de navegacin
-        navegacion = self.crear_contenedor_navegacion()
-        
-        # Contenedor principal de contenido
-        contenido_principal = self.crear_contenedor_contenido()
-        
-        # Instancia de la clase LoginRegister 
-        login_register = LoginRegister()
-        login_register.interfaz(navegacion, contenido_principal)
-    
-    # Crea los contenedores donde se agregaran y quitaran los widget
-    def crear_contenedor_navegacion(self):
-        navegacion = ctk.CTkFrame(self.root, fg_color=self.color.obtener_color_principal(), height=50)
-        navegacion.pack(side="left", fill="y")
-        return navegacion
-    
-    def crear_contenedor_contenido(self):
-        contenido_principal = ctk.CTkFrame(self.root, fg_color=self.color.obtener_color_principal())
-        contenido_principal.pack(fill="both", expand=True)
-        return contenido_principal
+        self.configurar_ventana_principal()
+        self.iniciar_UI()
 
+    def configurar_ventana_principal(self):
+        self.ancho = self.root.winfo_screenwidth()
+        self.alto = self.root.winfo_screenheight() - 65
+        self.root.title("")
+        self.root.state("zoomed")
+        self.root.configure(fg_color=Colores.get_color_principal())
+
+        self.root.geometry(f"{self.ancho}x{self.alto}+0+0")
+        self.root.resizable(False, False)
+
+    @GestorErrores.decorador("Error al iniciar la interfaz")
+    def iniciar_UI(self):
+        ControladorLogin.mostrar_interfaz_login(self.root)
+
+    @GestorErrores.decorador("Error al iniciar la aplicación")
     def run(self):
         self.root.mainloop()
 
@@ -42,6 +33,3 @@ class App:
 if __name__ == "__main__":
     app = App()
     app.run()
-
-
-
