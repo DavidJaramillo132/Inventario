@@ -2,6 +2,7 @@ from utils.utilidades_interfaz import UtilidadesParaInterfaz
 from UI.gestores import GestorErrores
 
 from models.usuarios import UsuarioSingleton
+from factories import UsuarioFactory
 from enums import UsuarioNombreDatos as UND
 
 from components import (
@@ -57,14 +58,15 @@ class InterfazRegister(FormularioRegister):
         frame_botones.grid(
             row=len(componentes) + 1, column=0, columnspan=2, padx=10, pady=5
         )
-        usuario = UsuarioSingleton.get_instance()
+        privilegio = UsuarioSingleton.get_instance().es_administrador()
 
         
         
-        if not usuario.es_administrador():
+        if privilegio == False:
             frame_botones.agregar_boton(
                 "Ir atras", lambda: ControladorLogin.mostrar_interfaz_login(root), columna=0
             )
+        
 
         frame_botones.agregar_boton(
             "Agregar",
@@ -78,6 +80,6 @@ class InterfazRegister(FormularioRegister):
                 componentes[UND.OCUPACION.value].get(),
                 componentes[UND.PRIVILEGIOS.value].get(),
             ),
-            columna=0 if usuario.es_administrador() else 1,
-            columnspan=2 if usuario.es_administrador() else 1,
+            columna=0 if privilegio else 1,
+            columnspan=2 if privilegio else 1,
         )

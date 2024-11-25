@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 from components import LabelTituloSubtitulo
 
+
 class Formulario(ABC):
-    
+
     @classmethod
     def _crear_campo(cls, frame, campo, index):
         pass
-    
+
     @classmethod
     def _crear_campos(cls, frame, campos):
         """

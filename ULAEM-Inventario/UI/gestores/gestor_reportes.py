@@ -2,13 +2,14 @@ import datetime
 import os
 from fpdf import FPDF
 
-from .gestor_errores import GestorErrores
+from UI.gestores import GestorErrores, GestorNotificaciones
 from database import GestorServicioSQL
 from enums import EquipoNombreDatos as END
 
 
 class GestorReportes:
     @staticmethod
+
     @GestorErrores.decorador("Error al generar el reporte")
     def generar_reporte_aula(idAula):
         try:
@@ -34,9 +35,15 @@ class GestorReportes:
 
             # Guardar el archivo
             GestorReportes._guardar_pdf(pdf, idAula)
+
+            # Muestra el mensaje de éxito solo si todo el proceso fue exitoso
+            GestorNotificaciones.mostrar_info(
+                "Reporte generado", "Reporte generado con éxito"
+            )
             return True
         except Exception as e:
-            return False
+            raise Exception(f"Error al generar el reporte: {e}")
+
 
     @staticmethod
     def _agregar_encabezados(pdf, columns):

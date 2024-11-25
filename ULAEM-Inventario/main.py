@@ -6,6 +6,7 @@ from UI.gestores import GestorErrores
 
 # Clase principal de la aplicación
 class App:
+    """Clase principal que ejecuta el programa entero"""
     def __init__(self):
         self.root = ctk.CTk()
         self.configurar_ventana_principal()

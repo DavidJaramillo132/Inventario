@@ -10,10 +10,10 @@ class ControladorTablaComentario:
         TablaComentario.mostrar_interfaz_tabla_comentarios(root, idAula)
 
     @staticmethod
-    def manejar_eliminar_comentario(frame, idComentario):
+    def manejar_eliminar_comentario(frame, comentario):
 
         if GestorNotificaciones.mostrar_confirmacion("Eliminar comentario", "¿Está seguro que desea eliminar este comentario?"):
 
-            GestorServicioSQL.eliminar_comentario(idComentario)
+            GestorServicioSQL.eliminar_comentario(comentario.idComentario)
             GestorNotificaciones.mostrar_info("Comentario eliminado", "El comentario ha sido eliminado con éxito")
         frame.destroy()

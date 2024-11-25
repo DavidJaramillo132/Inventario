@@ -9,9 +9,10 @@ RUTA_IMAGEN_OCULTAR_CONTRASENA = r"assets\img\boton_contrasena\ocultar_oscuro.pn
 RUTA_IMAGEN_MOSTRAR_CONTRASENA = r"assets\img\boton_contrasena\mostrar_oscuro.png"
 TAMANO_BOTON_MOSTRAR_CONTRASENA = (20, 20)
 
+
 class EntryContrasena(ContenedorPrincipal):
-    
-    def __init__(self, parent, texto="Contraseña", grid=False,row=0, *args, **kwargs):
+
+    def __init__(self, parent, texto="Contraseña", grid=False, row=0, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
         self.IMAGENCTK_OCULTAR_CONTRASENA = UtilidadesParaInterfaz.cargar_imagen(
@@ -29,7 +30,6 @@ class EntryContrasena(ContenedorPrincipal):
         else:
             self.label.pack(pady=5)
             self.frame_botones_contrasena.pack(pady=5)
-            
 
         # Entry para la contraseña
         self.entry = EntryPersonalizado(self.frame_botones_contrasena)
@@ -46,7 +46,7 @@ class EntryContrasena(ContenedorPrincipal):
             width=20,
             command=self.__manejar_visibilidad_contrasena,
         )
-        self.boton_manejar_visibilidad.pack(pady=5,side="left")
+        self.boton_manejar_visibilidad.pack(pady=5, side="left")
 
     def __manejar_visibilidad_contrasena(self):
         if self.entry.cget("show") == "*":
@@ -62,9 +62,9 @@ class EntryContrasena(ContenedorPrincipal):
 
     def get(self):
         return self.entry.get()
-    
+
     def set(self, valor):
         self.entry.insert(0, valor)
-    
+
     def clear(self):
         self.entry.delete(0, "end")

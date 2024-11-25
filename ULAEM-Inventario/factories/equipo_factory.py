@@ -1,5 +1,4 @@
-from models.equipos.equipo_electronico import EquipoElectronico
-from models.equipos.equipo_mueble import EquipoMueble
+from models.equipos import EquipoElectronico, EquipoMueble
 from enums import TipoEquipo
 
 # Fábrica de elementos

@@ -11,19 +11,19 @@ class ControladorTablaUsuario:
         TablaUsuario.mostrar_interfaz_tabla_usuarios(root, frame_principal)
 
     @staticmethod
-    def manejar_eliminar_usuario(root, frame_principal, cedula):
+    def manejar_eliminar_usuario(root, frame_principal, usuario):
         from UI.controllers import ControladorLogin
 
-        usuario = UsuarioSingleton.get_instance()
+        usuarioActual = UsuarioSingleton.get_instance()
 
-        if usuario.get_cedula() == cedula:
+        if usuarioActual.get_cedula() == usuario.cedula:
             if ControladorTablaUsuario._confirmar_eliminacion_cuenta_propia():
                 ControladorTablaUsuario._eliminar_usuario_y_navegar(
-                    cedula, lambda: ControladorLogin.mostrar_interfaz_login(root)
+                    usuarioActual.get_cedula(), lambda: ControladorLogin.mostrar_interfaz_login(root)
                 )
         else:
             ControladorTablaUsuario._eliminar_usuario_y_navegar(
-                cedula,
+                usuario.cedula,
                 lambda: ControladorTablaUsuario.mostrar_interfaz_tabla_usuarios(
                     root, frame_principal
                 ),

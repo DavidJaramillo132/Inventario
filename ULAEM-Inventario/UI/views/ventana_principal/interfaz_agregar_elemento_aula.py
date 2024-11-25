@@ -6,6 +6,7 @@ from components import (
 )
 from UI.gestores import GestorErrores
 from enums import EquipoNombreDatos as END
+from models import Equipo
 
 
 class InterfazAgregarElemento(FormularioCrearElementos):
@@ -52,7 +53,7 @@ class InterfazAgregarElemento(FormularioCrearElementos):
         )
 
         frame_botones.agregar_boton(
-            "Agregar elemenento",
+            "Agregar elemento",
             lambda: ControladorAgregarElemento.manejar_agregar_elemento_aula(
                 frame,
                 componentes[END.NOMBRE.value].get(),
