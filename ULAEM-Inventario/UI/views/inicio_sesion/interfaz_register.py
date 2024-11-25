@@ -34,7 +34,7 @@ class InterfazRegister(FormularioRegister):
     @classmethod
     def __crear_interfaz_register(cls, root, frame_register):
 
-        RUTA_IMAGEN_REGISTER = r"assets\img\login.png"
+        RUTA_IMAGEN_REGISTER = r"ULAEM-Inventario\assets\img\login.png"
 
         # Título
         LabelTituloSubtitulo(

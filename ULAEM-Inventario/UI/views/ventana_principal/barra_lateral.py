@@ -9,7 +9,7 @@ class BarraLateral(ContenedorPrincipal):
     Extiende la clase `ContenedorPrincipal` y contiene botones y elementos visuales 
     para interactuar con el sistema de inventario.
     """""
-    RUTA_LOGO_ULEAM = r"assets\img\logo_uleam.png"  # Ruta al logo de la ULEAM
+    RUTA_LOGO_ULEAM = r"ULAEM-Inventario\assets\img\logo_uleam.png"  # Ruta al logo de la ULEAM
     DIMENSIONES_LOGO_ULEAM = (100, 80)  # Dimensiones del logo (ancho, alto)
 
     def __init__(self, root, contenedor_principal, *args, **kwargs) -> None:

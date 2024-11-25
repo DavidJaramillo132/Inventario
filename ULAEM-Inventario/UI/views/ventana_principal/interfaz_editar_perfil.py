@@ -30,7 +30,7 @@ class InterfazEditarPerfil(FormularioRegister):
 
     @classmethod
     def _crear_editar_perfil(cls, root, frame_editar_perfil):
-        RUTA_IMAGEN_EDITAR_PERFIL = r"assets\img\login.png"
+        RUTA_IMAGEN_EDITAR_PERFIL = r"ULAEM-Inventario\assets\img\login.png"
 
         # Título
         LabelTituloSubtitulo(

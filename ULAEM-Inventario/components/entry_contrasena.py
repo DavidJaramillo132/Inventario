@@ -5,8 +5,8 @@ from .custom_entry import EntryPersonalizado
 from .contenedor_principal import ContenedorPrincipal
 from .label_titulo_subtitulo import LabelTituloSubtitulo
 
-RUTA_IMAGEN_OCULTAR_CONTRASENA = r"assets\img\boton_contrasena\ocultar_oscuro.png"
-RUTA_IMAGEN_MOSTRAR_CONTRASENA = r"assets\img\boton_contrasena\mostrar_oscuro.png"
+RUTA_IMAGEN_OCULTAR_CONTRASENA = r"ULAEM-Inventario\assets\img\boton_contrasena\ocultar_oscuro.png"
+RUTA_IMAGEN_MOSTRAR_CONTRASENA = r"ULAEM-Inventario\assets\img\boton_contrasena\mostrar_oscuro.png"
 TAMANO_BOTON_MOSTRAR_CONTRASENA = (20, 20)
 
 

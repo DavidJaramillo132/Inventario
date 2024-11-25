@@ -50,7 +50,7 @@ class InterfazLogin:
         from UI.controllers import ControladorLogin, ControladorRegister
 
         # Ruta de la imagen del login.
-        RUTA_IMAGEN_LOGIN = r"assets\img\login.png"
+        RUTA_IMAGEN_LOGIN = r"ULAEM-Inventario\assets\img\login.png"
 
         # Crea un título con una imagen representativa.
         LabelTituloSubtitulo(
