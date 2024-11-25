@@ -1,0 +1,1 @@
+Aqui esta los elementos estaticos como imagen y las fuentes de letras 

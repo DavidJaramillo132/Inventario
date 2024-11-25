@@ -1,5 +1,7 @@
 from database import GestorServicioSQL
 from UI.gestores import GestorErrores
+
+from models import Comentario
 from enums import ComentarioNombreDatos  as CND
 from components import (
     LabelTituloSubtitulo,
@@ -50,15 +52,16 @@ class TablaComentario(TablaComponente):
         resultados = GestorServicioSQL.obtener_comentarios_por_aula(idAula)
         print(resultados)
         # Construir filas de datos para la tabla
-        for fila, (idComentario,contenido,fecha_creacion,idAula,cedula) in enumerate(resultados, start=1):
+        for fila, data in enumerate(resultados, start=1):
+            comentario = Comentario(*data)
             cls._crear_fila_data(
-                table_frame, fila, idComentario,contenido,fecha_creacion,idAula,cedula
+                table_frame, fila, comentario
             )
 
-            cls._crear_botones(table_frame, frame, idComentario, fila)
+            cls._crear_botones(table_frame, frame, comentario, fila)
 
     @classmethod
-    def _crear_botones(cls, table_frame, frame, idComentario, i, ):
+    def _crear_botones(cls, table_frame, frame, comentario, i, ):
         from UI.controllers import ControladorTablaComentario
 
         contenedor_botones = ContenedorBotones(table_frame)
@@ -66,8 +69,8 @@ class TablaComentario(TablaComponente):
 
         contenedor_botones.agregar_boton(
             "Eliminar un comentario",
-            lambda idComentario=idComentario: ControladorTablaComentario.manejar_eliminar_comentario(
-                frame, idComentario  
+            lambda comentario=comentario: ControladorTablaComentario.manejar_eliminar_comentario(
+                frame, comentario  
             ),
             columna=0
         )

@@ -18,9 +18,7 @@ class ServiciosAula:
     @classmethod
     def obtener_aula_por_id(cls, id_aula):
         try:
-            cls.db.execute(
-                "SELECT * FROM Aula WHERE idAula = ?", (id_aula,)
-            )
+            cls.db.execute("SELECT * FROM Aula WHERE idAula = ?", (id_aula,))
             resultadoAula = cls.db.fetchone()
             if not resultadoAula:
                 raise Exception("Aula no encontrada")
@@ -29,25 +27,13 @@ class ServiciosAula:
             raise Exception(f"Error al obtener aula: {str(e)}")
 
     @classmethod
-    def actualizar_aula(cls, id_aula, tipo, dimensiones):
+    def crear_aula(cls, dimensiones, tipo):
         try:
-            cls.db.execute(
-                "UPDATE Aula SET tipo = ? WHERE idAula = ?", (tipo, dimensiones,id_aula)
-            )
-            cls.db.commit()
-            return True
-        except Exception as e:
-            cls.db.rollback()
-            raise Exception(f"Error al actualizar aula: {str(e)}")
-
-    @classmethod
-    def crear_aula(cls, dimensiones,tipo):
-        try:
-            if not all([tipo, dimensiones]):
+            if not all([dimensiones, tipo]):
                 raise Exception("Campos incompletos")
 
             cls.db.execute(
-                "INSERT INTO Aula(dimensiones, tipo) VALUES (?,?)", (dimensiones,tipo)
+                "INSERT INTO Aula(dimensiones, tipo) VALUES (?,?)", (dimensiones, tipo)
             )
             cls.db.commit()
             return True
@@ -64,4 +50,3 @@ class ServiciosAula:
         except Exception as e:
             cls.db.rollback()
             raise Exception(f"Error al eliminar aula: {str(e)}")
-

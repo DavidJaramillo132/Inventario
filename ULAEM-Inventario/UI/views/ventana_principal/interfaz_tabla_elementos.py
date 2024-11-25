@@ -1,6 +1,7 @@
 from database import GestorServicioSQL
 from UI.gestores import GestorErrores
 from enums import EquipoNombreDatos as END
+from models import Equipo
 from components import (
     LabelTituloSubtitulo,
     ScrollableFramePersonalizado,
@@ -48,17 +49,21 @@ class TablaElemento(TablaComponente):
 
         # Obtener resultados de la base de datos
         resultados = GestorServicioSQL.obtener_elementos_por_idaula(idAula)
-        print(resultados)
         # Construir filas de datos para la tabla
-        for fila, (idElemento, nombre,tipo, estado,fecha_adquisicion,cantidad) in enumerate(resultados, start=1):
-            cls._crear_fila_data(
-                table_frame, fila, idElemento, nombre,tipo, estado,fecha_adquisicion,cantidad
-            )
+        for fila, data in enumerate(resultados, start=1):
+            elemento = Equipo(*data)
+            cls._crear_fila_data(table_frame, fila, elemento)
 
-            cls._crear_botones(table_frame, frame, idElemento, fila)
+            cls._crear_botones(table_frame, frame, elemento, fila)
 
     @classmethod
-    def _crear_botones(cls, table_frame, frame, idElemento, i, ):
+    def _crear_botones(
+        cls,
+        table_frame,
+        frame,
+        elemento,
+        i,
+    ):
         from UI.controllers import ControladorTablaElemento
 
         contenedor_botones = ContenedorBotones(table_frame)
@@ -66,9 +71,8 @@ class TablaElemento(TablaComponente):
 
         contenedor_botones.agregar_boton(
             "Eliminar elemento",
-            lambda idElemento=idElemento: ControladorTablaElemento.manejar_eliminar_elemento(
-                frame, idElemento  
+            lambda elemento=elemento: ControladorTablaElemento.manejar_eliminar_elemento(
+                frame, elemento
             ),
-            columna=0
+            columna=0,
         )
-        

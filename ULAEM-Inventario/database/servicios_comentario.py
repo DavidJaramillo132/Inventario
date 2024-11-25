@@ -4,16 +4,6 @@ from database.conexion_DB import ConexionBD
 class ServiciosComentario:
     db = ConexionBD()
 
-    @classmethod
-    def obtener_comentarios(cls):
-        try:
-            cls.db.execute("SELECT * FROM Comentario")
-            resultadoUsuarios = cls.db.fetchall()
-            if not resultadoUsuarios:
-                raise Exception("No hay comentarios ingresados")
-            return resultadoUsuarios
-        except Exception as e:
-            raise Exception(f"Error al obtener comentarios: {str(e)}")
         
     @classmethod
     def obtener_comentarios_por_aula(cls, idAula):

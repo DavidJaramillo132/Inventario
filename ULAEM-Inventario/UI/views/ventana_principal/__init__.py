@@ -6,3 +6,4 @@ from .interfaz_agregar_elemento_aula import InterfazAgregarElemento
 from .interfaz_tabla_elementos import TablaElemento
 from .interfaz_agregar_comentario import InterfazAgregarComentario
 from .interfaz_tabla_comentarios import TablaComentario
+from .interfaz_editar_perfil import InterfazEditarPerfil

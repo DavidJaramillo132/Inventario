@@ -1,4 +1,4 @@
-from abc import ABC
+from factories import UsuarioFactory
 from utils.utilidades_interfaz import UtilidadesParaInterfaz
 
 from database import GestorServicioSQL
@@ -7,12 +7,11 @@ from UI.controllers import ControladorTablaUsuario
 
 
 from components import (
-
     LabelTituloSubtitulo,
     BotonPersonalizado,
     LabelTextoNormal,
     ScrollableFramePersonalizado,
-    TablaComponente
+    TablaComponente,
 )
 
 
@@ -22,10 +21,10 @@ class TablaUsuario(TablaComponente):
     def mostrar_interfaz_tabla_usuarios(cls, root, frame_principal):
         UtilidadesParaInterfaz.limpiar_frame_principal(frame_principal)
 
-        cls._crear_tabla_usuarios(root,frame_principal)
+        cls._crear_tabla_usuarios(root, frame_principal)
 
     @classmethod
-    def _crear_tabla_usuarios(cls, root,frame_principal):
+    def _crear_tabla_usuarios(cls, root, frame_principal):
 
         # Crear label de título usando WidgetCtk
         LabelTituloSubtitulo(frame_principal, "Usuarios").pack(pady=10)
@@ -49,22 +48,27 @@ class TablaUsuario(TablaComponente):
             UND.OCUPACION.value,
             UND.PRIVILEGIOS.value,
         ]
-        cls._crear_fila_encabezado(table_frame,columns)
+        cls._crear_fila_encabezado(table_frame, columns)
 
         resultados = GestorServicioSQL.obtener_usuarios()
 
         # Mostrar datos en la tabla
-        for i, (cedula, nombre, email, contrasena, ocupacion, privilegios) in enumerate(
-            resultados, start=1
-        ):
-            cls._crear_fila_data(table_frame,i,cedula, nombre, email, contrasena, ocupacion, privilegios)
-            cls._crear_botones(table_frame,cedula,root,frame_principal,i)
-            
-    @classmethod
-    def _crear_botones(cls, table_frame, cedula,root,frame_principal,fila):
-            btn_eliminar_usuario = BotonPersonalizado(
+        for i, datos in enumerate(resultados, start=1):
+            usuario = UsuarioFactory.crear_usuario(datos)
+            cls._crear_fila_data(
                 table_frame,
-                "Eliminar",
-                lambda cedula=cedula: ControladorTablaUsuario.manejar_eliminar_usuario(root,frame_principal,cedula),
+                i,
+                usuario,
             )
-            btn_eliminar_usuario.grid(row=fila, column=6, padx=2)
+            cls._crear_botones(table_frame, usuario, root, frame_principal, i)
+
+    @classmethod
+    def _crear_botones(cls, table_frame, usuario, root, frame_principal, fila):
+        btn_eliminar_usuario = BotonPersonalizado(
+            table_frame,
+            "Eliminar",
+            lambda usuario=usuario: ControladorTablaUsuario.manejar_eliminar_usuario(
+                root, frame_principal, usuario
+            ),
+        )
+        btn_eliminar_usuario.grid(row=fila, column=6, padx=2)

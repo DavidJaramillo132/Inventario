@@ -1,40 +1,31 @@
-from abc import ABC, abstractmethod
-from datetime import datetime
+from ..baseAbstractClass import BaseAbstractClass
 
 
 # Clase base abstracta Elemento
-class Elemento(ABC):
-    def __init__(self, idElemento, nombre, estado, fecha_adquisicion, cantidad):
+class Equipo(BaseAbstractClass):
+    def __init__(
+        self, idElemento, nombre, tipo, estado, fecha_adquisicion, cantidad, idAula
+    ):
         self.idElemento = idElemento
         self.nombre = nombre
+        self.tipo = tipo
         self.estado = estado
         self.fecha_adquisicion = fecha_adquisicion
         self.cantidad = cantidad
+        self.idAula = idAula
 
-    @classmethod
-    def diccionario_a_instancia(cls, datos):
-        idElemento = datos["idElemento"]
-        nombre = datos["nombre"]
-        estado = datos["estado"]
-        fecha_adquisicion = cls._convertir_fecha(datos["fecha_adquisicion"])
-        cantidad = datos["cantidad"]
+    def get_datos(self):
+        return (
+            self.idElemento,
+            self.nombre,
+            self.tipo,
+            self.estado,
+            self.fecha_adquisicion,
+            self.cantidad,
+            self.idAula,
+        )
 
-        return cls(idElemento,nombre, estado, fecha_adquisicion, cantidad)
-
-    @staticmethod
-    def _convertir_fecha(fecha_str):
-
-        try:
-            return datetime.strptime(fecha_str, "%Y-%m-%d")
-        except ValueError:
-            raise ValueError(
-                f"Formato de fecha inválido: {fecha_str}. Debe ser 'YYYY-MM-DD'."
-            )
-
-    @abstractmethod
-    def getDescripcion(self):
-        pass
-
-    @abstractmethod
-    def getCategoria(self):
+    def update_datos(
+        self, idElemento, nombre, tipo, estado, fecha_adquisicion, cantidad, idAula
+    ):
         pass

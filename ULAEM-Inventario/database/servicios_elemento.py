@@ -9,7 +9,7 @@ class ServiciosElemento:
         try:
             cls.db.execute(
                 """
-                    SELECT idElemento, nombre,tipo, estado,fechaAdquisicion,cantidad
+                    SELECT *
                     FROM Elemento 
                     WHERE idAula = ?
                 """,

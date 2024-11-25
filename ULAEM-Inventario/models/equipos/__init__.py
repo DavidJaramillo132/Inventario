@@ -1,2 +1,1 @@
-from .equipo_electronico import EquipoElectronico
-from .equipo_mueble import EquipoMueble
+from .elemento import Equipo

@@ -1,8 +1,9 @@
-from abc import ABC,abstractmethod
-from enums import UsuarioNombreDatos as UND
+from abc import abstractmethod
+from ..baseAbstractClass import BaseAbstractClass
 
-class Usuario(ABC):
-    def __init__(self,cedula, nombre, email, contrasena, ocupacion,privilegios):
+
+class Usuario(BaseAbstractClass):
+    def __init__(self, cedula, nombre, email, contrasena, ocupacion, privilegios):
         self.__cedula = cedula
         self._nombre = nombre
         self._email = email
@@ -10,16 +11,7 @@ class Usuario(ABC):
         self.__ocupacion = ocupacion
         self.__privilegios = privilegios
 
-    @classmethod
-    def diccionario_a_instancia(cls, datos):
-        cedula = datos[UND.CEDULA.value]
-        nombre = datos[UND.NOMBRE.value]
-        email = datos[UND.EMAIL.value]
-        contrasena = datos[UND.CONTRASENA.value]
-        ocupacion = datos[UND.OCUPACION.value]
-        privilegios = datos[UND.PRIVILEGIOS.value]
-        return cls(cedula, nombre, email, contrasena, ocupacion, privilegios)
-    
+    # Como contrato, debe implementar los metodos abstractos de la clase BaseAbstractClass
     def update_datos(self, cedula, nombre, email, contrasena, ocupacion, privilegios):
         self.cedula = cedula
         self.nombre = nombre
@@ -27,20 +19,21 @@ class Usuario(ABC):
         self.contrasena = contrasena
         self.ocupacion = ocupacion
         self.privilegios = privilegios
-    
-    def get_datos_usuario(self):
-        return {
-            UND.CEDULA.value: self.cedula,
-            UND.NOMBRE.value: self.nombre,
-            UND.EMAIL.value: self.email,
-            UND.CONTRASENA.value: self.contrasena,
-            UND.OCUPACION.value: self.ocupacion,
-            UND.PRIVILEGIOS.value: self.privilegios,
-        }
-    
+
+    # Como contrato, debe implementar los metodos abstractos de la clase BaseAbstractClass
+    def get_datos(self):
+        return (
+            self.cedula,
+            self.nombre,
+            self.email,
+            self.contrasena,
+            self.ocupacion,
+            self.privilegios,
+        )
+
     @abstractmethod
     def es_administrador(self):
-        False
+        pass
 
     @property
     def cedula(self):
@@ -90,6 +83,5 @@ class Usuario(ABC):
     def privilegios(self, privilegios):
         self.__privilegios = privilegios
 
-    
     def __str__(self):
         return f"Usuario: {self.nombre}, Ocupacion: {self.ocupacion}, Privilegios: {self.privilegios}"

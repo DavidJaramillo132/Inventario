@@ -10,7 +10,8 @@ class TablaComponente(ABC):
             label.grid(row=0, column=index, padx=5, pady=5)
 
     @classmethod
-    def _crear_fila_data(cls, frame, fila, *data):
+    def _crear_fila_data(cls, frame, fila, objeto):
+        data = objeto.get_datos()
         for col, item in enumerate(data):
             label = LabelTextoNormal(frame, item)
             label.grid(row=fila, column=col, padx=5, pady=5)
