@@ -1,1 +1,1 @@
-Aqui esta los elementos estaticos como imagen y las fuentes de letras 
+Aqui esta los elementos estaticos como imagen,  las fuentes de letras y colores

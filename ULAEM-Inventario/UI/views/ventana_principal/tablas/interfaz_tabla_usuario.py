@@ -54,7 +54,7 @@ class TablaUsuario(TablaComponente):
 
         # Mostrar datos en la tabla
         for i, datos in enumerate(resultados, start=1):
-            usuario = UsuarioFactory.crear_usuario(datos)
+            usuario = UsuarioFactory.crear_objeto(datos)
             cls._crear_fila_data(
                 table_frame,
                 i,

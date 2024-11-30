@@ -7,7 +7,7 @@ from components import (
     ContenedorPrincipal,
     LabelTituloSubtitulo,
     ContenedorBotones,
-    FormularioRegister
+    FormularioRegister,
 )
 
 
@@ -41,18 +41,18 @@ class InterfazEditarPerfil(FormularioRegister):
 
         # Campos a mostrar (usando el Enum)
         campos = [
-            UND.CEDULA,
-            UND.NOMBRE,
-            UND.EMAIL,
-            UND.CONTRASENA,
-            UND.OCUPACION,
-            UND.PRIVILEGIOS,
+            UND.CEDULA.value,
+            UND.NOMBRE.value,
+            UND.EMAIL.value,
+            UND.CONTRASENA.value,
+            UND.OCUPACION.value,
+            UND.PRIVILEGIOS.value,
         ]
 
-        nombre_campos = [campo.value for campo in campos]
-        componentes = cls._crear_campos(frame_editar_perfil, nombre_campos)
+        componentes = cls._crear_campos(frame_editar_perfil, campos)
 
-        ControladorEditarPerfil.poblar_campos(campos,componentes)
+        ControladorEditarPerfil.poblar_campos(campos, componentes)
+        componentes.get(UND.CEDULA.value).configure(state="disabled")
 
         cls._crear_botones(root, frame_editar_perfil, componentes)
 

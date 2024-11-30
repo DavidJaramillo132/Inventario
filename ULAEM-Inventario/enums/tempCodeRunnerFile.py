@@ -1,0 +1,1 @@
+print(TipoEquipo.ELECTRONICO.value)

@@ -31,7 +31,7 @@ class UsuarioSingleton:
         if cls.is_initialized:
             raise Exception("La instancia ya ha sido inicializada.")  # Previene la inicialización múltiple
 
-        cls._usuario = UsuarioFactory.crear_usuario(datos)  # Crea un usuario utilizando la fábrica
+        cls._usuario = UsuarioFactory.crear_objeto(datos)  # Crea un usuario utilizando la fábrica
         cls.is_initialized = True  # Marca la instancia como inicializada
 
     @classmethod
@@ -67,16 +67,16 @@ class UsuarioSingleton:
             return self._usuario.es_administrador()  # Llama al método es_administrador del usuario
         return False  # Devuelve False si no hay usuario
 
-    def get_datos(self):
+    def get_datos(self, formato="tuple"):
         """""
         Devuelve los datos del usuario actual.
         
         Returns:
             dict: Información del usuario.
         """""
-        return self._usuario.get_datos()  # Llama al método get_datos del usuario
+        return self._usuario.get_datos(formato)  # Llama al método get_datos del usuario
 
-    def update_datos(self, cedula, nombre, email, contrasena, ocupacion, privilegios):
+    def update_datos(self, nombre, email, contrasena, ocupacion, privilegios):
         """""
         Actualiza los datos del usuario almacenado.
         
@@ -89,7 +89,7 @@ class UsuarioSingleton:
             privilegios (list): Nuevos privilegios del usuario.
         """""
         # Actualiza los datos del usuario usando su método
-        self._usuario.update_datos(cedula, nombre, email, contrasena, ocupacion, privilegios)  
+        self._usuario.update_datos(nombre, email, contrasena, ocupacion, privilegios)  
 
     def get_cedula(self):
         """""

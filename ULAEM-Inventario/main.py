@@ -14,7 +14,7 @@ class App:
 
     def configurar_ventana_principal(self):
         self.ancho = self.root.winfo_screenwidth()
-        self.alto = self.root.winfo_screenheight() - 65
+        self.alto = self.root.winfo_screenheight() 
         self.root.title("")
         self.root.state("zoomed")
         self.root.configure(fg_color=Colores.get_color_principal())

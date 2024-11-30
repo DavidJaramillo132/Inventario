@@ -29,9 +29,7 @@ class TablaAula(TablaComponente):
 
         # Frame para la tabla de datos usando WidgetCtk
         table_frame = ScrollableFramePersonalizado(frame_principal)
-        table_frame.pack(
-            side="top", fill="both", expand=True, padx=10, pady=10, anchor="center"
-        )
+        table_frame.pack(side="top", fill="both", expand=True, padx=10, pady=10, anchor="center")
 
         # Centrar correctamente
         frame_principal.pack_propagate(False)
@@ -91,17 +89,10 @@ class TablaAula(TablaComponente):
         BotonPersonalizado(
             table_frame,
             "Ver Elementos",
-            lambda aula=aula: ControladorTablaAula.mostrar_interfaz_ver_elementos(
-                root, aula
-            ),
-        ).grid(row=i, column=columna + 4, padx=2)
+            lambda aula=aula: ControladorTablaAula.mostrar_interfaz_ver_elementos(root, aula),).grid(row=i, column=columna + 4, padx=2)
 
         # Botón de "Generar reporte"
-        BotonPersonalizado(
-            table_frame,
-            "Generar reporte",
-            lambda aula=aula: ControladorTablaAula.generar_reporte(aula),
-        ).grid(row=i, column=columna + 6, padx=2)
+        BotonPersonalizado(table_frame,"Generar reporte",lambda aula=aula: ControladorTablaAula.generar_reporte(aula),).grid(row=i, column=columna + 6, padx=2)
         
         if not usuario.es_administrador():
             BotonPersonalizado(

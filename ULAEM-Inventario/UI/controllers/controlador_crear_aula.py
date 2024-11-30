@@ -10,10 +10,11 @@ class ControladorCrearSala:
     
     @staticmethod
     @GestorErrores.decorador("Error al crear la sala")
-    def manejar_crear_nueva_sala(dimensiones,tipo):
-        Validador.validar_todos_campos_sala(dimensiones, tipo)
+    def manejar_crear_nueva_sala(idAula,dimensiones,tipo):
+        Validador.validar_todos_campos_sala(idAula,dimensiones, tipo)
         
-        GestorServicioSQL.crear_aula(dimensiones, tipo)
+        GestorServicioSQL.obtener_id_aula(idAula)
+        GestorServicioSQL.crear_aula(idAula, dimensiones, tipo)
         GestorNotificaciones.mostrar_info("Sala creada", "La sala ha sido creada correctamente")
         
         

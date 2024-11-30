@@ -20,7 +20,7 @@ IF NOT EXISTS (
 
 END;
 
-select * from Usuario;
+--select * from Usuario;
 
 -- Crear tabla Aula si no existe
 IF NOT EXISTS (
@@ -31,7 +31,7 @@ IF NOT EXISTS (
     WHERE
         name = 'Aula'
 ) BEGIN CREATE TABLE Aula (
-    idAula INT IDENTITY PRIMARY KEY,
+    idAula INT PRIMARY KEY,
     dimensiones INT NOT NULL,
     tipo VARCHAR(100) NOT NULL
 );

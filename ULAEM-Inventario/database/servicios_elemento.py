@@ -9,9 +9,7 @@ class ServiciosElemento:
         try:
             cls.db.execute(
                 """
-                    SELECT *
-                    FROM Elemento 
-                    WHERE idAula = ?
+                    SELECT * FROM Elemento WHERE idAula = ?
                 """,
                 (id_aula,),
             )
@@ -49,3 +47,25 @@ class ServiciosElemento:
         except Exception as e:
             cls.db.rollback()
             raise Exception(f"Error al eliminar elemento del aula: {str(e)}")
+        
+    @classmethod
+    def actualizar_elemento(cls, id_elemento, nombre, tipo, estado, fecha_adquisicion, cantidad):
+        try:
+            cls.db.execute(
+                """UPDATE Elemento set nombre = ?, tipo = ?, estado = ?, fechaAdquisicion = ?, cantidad = ?
+                           WHERE idElemento = ?""",
+                (
+                    nombre,
+                    tipo,
+                    estado,
+                    fecha_adquisicion,
+                    cantidad,
+                    id_elemento,
+                ),
+            )
+            cls.db.commit()
+            return True
+        except Exception as e:
+            cls.db.rollback()
+            raise Exception(f"Error al eliminar elemento del aula: {str(e)}")
+    

@@ -8,3 +8,5 @@ class UsuarioNombreDatos(Enum):
     CONFIRMAR_CONTRASENA = "Confirmar Contraseña"
     OCUPACION = "Ocupación"
     PRIVILEGIOS = "Privilegios"
+    
+    

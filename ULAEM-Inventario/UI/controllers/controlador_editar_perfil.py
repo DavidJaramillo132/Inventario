@@ -12,22 +12,30 @@ class ControladorEditarPerfil:
 
         InterfazEditarPerfil.mostrar_editar_perfil(frame_editar_perfil)
 
+
     @staticmethod
     def poblar_campos(campos, componentes):
         """
-        Pobla los campos con los datos de un usuario existente.
+        Pobla los campos con los datos de un usuario existente usando un diccionario.
         """
         usuario = UsuarioSingleton.get_instance()
-        datos_usuario = usuario.get_datos()
+        datos_usuario = usuario.get_datos(formato="dict")  # Ahora es un dict
+        print(datos_usuario)
+        print(usuario.get_datos())
 
-        for campo, valor in zip(campos, datos_usuario):
-            componente = componentes.get(campo.value)
-            if componente and hasattr(componente, "set"):
-                componente.set(valor)
+        for campo in campos:
+            # Verifica si el campo existe en el dict de datos_usuario
+            valor = datos_usuario.get(campo)
+            if valor is not None:
+                componente = componentes.get(campo)
+                if componente and hasattr(componente, "set"):
+                    componente.set(valor)  # Pobla el componente con el valor
+                else:
+                    print(
+                        f"El componente para {campo} no tiene un método 'set' o no existe"
+                    )
             else:
-                print(
-                    f"El componente para {campo} no tiene un método 'set' o no existe"
-                )
+                print(f"No hay valor en 'datos_usuario' para el campo: {campo}")
 
     @staticmethod
     @GestorErrores.decorador("Error al actualizar el perfil")
@@ -37,14 +45,17 @@ class ControladorEditarPerfil:
         Validador.validar_todos_campos_cuenta(
             cedula, nombre, email, contrasena, ocupacion, privilegios
         )
-        print(cedula, nombre, email, contrasena, ocupacion, privilegios)
 
         if GestorAutentificacion.actualizar_usuario(
             cedula, nombre, email, contrasena, ocupacion, privilegios
         ):
             usuario = UsuarioSingleton.get_instance()
             usuario.update_datos(
-                cedula, nombre, email, contrasena, ocupacion, privilegios
+                nombre=nombre,
+                email=email,
+                contrasena=contrasena,
+                ocupacion=ocupacion,
+                privilegios=privilegios,
             )
             GestorNotificaciones.mostrar_info(
                 "Perfil actualizado", "Perfil actualizado con éxito"

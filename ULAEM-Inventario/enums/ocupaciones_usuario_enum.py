@@ -4,4 +4,3 @@ class OcupacionesUsuario(Enum):
     SOFTWARE = "Software"
     IT = "IT"
     PROFESOR = "Profesor"
-    ESTUDIANTE = "Estudiante"

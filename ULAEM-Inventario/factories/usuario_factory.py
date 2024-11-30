@@ -1,14 +1,15 @@
 from models.usuarios import UsuarioAdministrador, UsuarioNormal
 from enums import PrivilegiosUsuario, UsuarioNombreDatos as UND
+from .factory import Factory
 
 
-class UsuarioFactory:
+class UsuarioFactory(Factory):
     """
     Fábrica encargada de crear instancias de usuarios según sus privilegios.
     """
 
     @staticmethod
-    def crear_usuario(datos):
+    def crear_objeto(datos):
         """
         Crea y devuelve una instancia de usuario basada en los datos proporcionados.
 
@@ -21,8 +22,8 @@ class UsuarioFactory:
         Raises:
             Exception: Si el privilegio del usuario no es válido.
         """
-        print(datos)  # Imprime los datos para depuración.
-
+        # print(datos)  # Imprime los datos para depuración.
+        print(datos[-1])
         # Verifica el privilegio del usuario y retorna la instancia correspondiente.
         if datos[-1] == PrivilegiosUsuario.ADMINISTRADOR.value:
             return UsuarioAdministrador(*datos)  # Crea un usuario administrador.

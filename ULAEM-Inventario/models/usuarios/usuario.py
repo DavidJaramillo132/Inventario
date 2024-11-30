@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from ..baseAbstractClass import BaseAbstractClass
-
+from enums import UsuarioNombreDatos as UND
 
 class Usuario(BaseAbstractClass):
     def __init__(self, cedula, nombre, email, contrasena, ocupacion, privilegios):
@@ -12,16 +12,34 @@ class Usuario(BaseAbstractClass):
         self.__privilegios = privilegios
 
     # Como contrato, debe implementar los metodos abstractos de la clase BaseAbstractClass
-    def update_datos(self, cedula, nombre, email, contrasena, ocupacion, privilegios):
-        self.cedula = cedula
-        self.nombre = nombre
-        self.email = email
-        self.contrasena = contrasena
-        self.ocupacion = ocupacion
-        self.privilegios = privilegios
+
+    def update_datos(
+        self, nombre=None, email=None, contrasena=None, ocupacion=None, privilegios=None
+    ):
+        if nombre is not None:
+            self.nombre = nombre
+        if email is not None:
+            self.email = email
+        if contrasena is not None:
+            self.contrasena = contrasena
+        if ocupacion is not None:
+            self.ocupacion = ocupacion
+        if privilegios is not None:
+            self.privilegios = privilegios
 
     # Como contrato, debe implementar los metodos abstractos de la clase BaseAbstractClass
-    def get_datos(self):
+    def get_datos(self, tipo="tuple"):
+        if tipo == "dict":
+            return {
+                UND.CEDULA.value: self.cedula,
+                UND.NOMBRE.value: self.nombre,
+                UND.EMAIL.value: self.email,
+                UND.CONTRASENA.value: self.contrasena,
+                UND.OCUPACION.value: self.ocupacion,
+                UND.PRIVILEGIOS.value: self.privilegios,
+                
+            }
+
         return (
             self.cedula,
             self.nombre,

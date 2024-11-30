@@ -6,11 +6,12 @@ class Validador:
     Clase que agrupa métodos de validación para diferentes tipos de datos,
     asegurando que cumplan con ciertos criterios antes de ser procesados.
     """
-    
+
     class ValidacionError(Exception):
         """
         Clase interna que representa errores específicos de validación.
         """
+
         pass
 
     @staticmethod
@@ -28,9 +29,14 @@ class Validador:
         if not palabras:
             raise Validador.ValidacionError("El texto no puede estar vacío.")
         if not all(palabra.isalpha() for palabra in palabras):
+            print(f"Error en: {palabras}")
             raise Validador.ValidacionError(
                 "El texto solo puede contener palabras alfabéticas."
             )
+    @staticmethod        
+    def  validar_comentario(entrada):     
+        if entrada.isalpha():
+            return "Texto válido."
 
     @staticmethod
     def validar_email(email):
@@ -157,7 +163,7 @@ class Validador:
         Validador.validar_email(email)
         Validador.validar_contrasena(contrasena)
 
-    def validar_todos_campos_sala(dimensiones, tipo):
+    def validar_todos_campos_sala(idAula, dimensiones, tipo):
         """
         Valida los campos necesarios para la configuración de una sala.
 
@@ -168,11 +174,12 @@ class Validador:
         Raises:
             ValidacionError: Si los campos no cumplen con los criterios de validación.
         """
-        Validador.validar_campos_completos(dimensiones, tipo)
-        Validador.validar_texto(tipo)
-        Validador.validar_numero(dimensiones)
+        Validador.validar_campos_completos(idAula, dimensiones, tipo)
+        Validador.validar(idAula, dimensiones, tipo)
 
-    def validar_todos_campos_elementos(nombre, tipo, estado, fecha_adquisicion, cantidad, idAula):
+    def validar_todos_campos_elementos(
+        nombre, tipo, estado, fecha_adquisicion, cantidad, idAula
+    ):
         """
         Valida los campos necesarios para registrar elementos en una sala.
 
@@ -190,11 +197,7 @@ class Validador:
         Validador.validar_campos_completos(
             nombre, tipo, estado, fecha_adquisicion, cantidad, idAula
         )
-        Validador.validar_texto(nombre)
-        Validador.validar_texto(tipo)
-        Validador.validar_texto(estado)
-        Validador.validar_numero(cantidad)
-        Validador.validar_fecha(fecha_adquisicion)
+        Validador.validar(nombre, tipo, estado, fecha_adquisicion, cantidad, idAula)
 
     def validar_todos_campos_comentarios(contenido, idAula):
         """
@@ -208,6 +211,37 @@ class Validador:
             ValidacionError: Si los campos no cumplen con los criterios de validación.
         """
         Validador.validar_campos_completos(contenido, idAula)
-        Validador.validar_texto(contenido)
-        Validador.validar_numero(idAula)
+        Validador.validar(contenido, idAula)
 
+    @staticmethod
+    def validar(*args):
+        """
+        Método que valida múltiples tipos de datos con un solo método, utilizando
+        argumentos variables para adaptarse a los diferentes casos.
+
+        Args:
+            *args: Campos a validar que pueden ser de diferentes tipos (str, int, etc.).
+
+        Raises:
+            ValidacionError: Si algún campo no cumple con los criterios de validación.
+        """
+        for campo in args:
+            print(campo)
+            if isinstance(campo, str):
+                if "-" in campo:
+                    Validador.validar_fecha(campo)
+                elif campo.isdigit():
+                    Validador.validar_numero(campo)
+                elif campo.isalpha():
+                    Validador.validar_texto(campo)
+                else:
+                    # Si el campo es un texto, valida como texto
+                    Validador.validar_comentario(campo)
+            elif isinstance(campo, int):
+                # Si el campo es un número, valida como número
+                Validador.validar_numero(campo)
+
+            else:
+                raise Validador.ValidacionError(
+                    f"Validación no soportada para el tipo: {type(campo)}"
+                )

@@ -18,7 +18,8 @@ class EntryLabel(ctk.CTkFrame):
             self.entry.pack(pady=10)
         
         
-
+    def configure(self,*args, **kwargs):
+        self.entry.configure(*args, **kwargs)
     def get(self):
         return self.entry.get()
     

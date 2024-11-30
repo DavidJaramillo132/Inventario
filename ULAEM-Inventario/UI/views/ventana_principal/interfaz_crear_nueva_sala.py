@@ -23,14 +23,11 @@ class InterfazCrearNuevaSala(FormularioCrearAulas):
     @classmethod
     def __crear_interfaz_nueva_sala(cls, contenedor):
         # Título
-        LabelTituloSubtitulo(
-            contenedor,
-            "Crear nueva sala",
-        ).grid(row=0, column=0, columnspan=2, padx=10, pady=20, sticky="nsew")
+        LabelTituloSubtitulo(contenedor,"Crear nueva sala",).grid(row=0, column=0, columnspan=2, padx=10, pady=20, sticky="nsew")
 
 
         # Campos a mostrar
-        campos = [campo.value for campo in list(AND)][1:]
+        campos = [campo.value for campo in list(AND)]
         componentes = cls._crear_campos(contenedor, campos)
 
         # Crear botones
@@ -41,13 +38,12 @@ class InterfazCrearNuevaSala(FormularioCrearAulas):
         from UI.controllers import ControladorCrearSala
 
         frame_botones = ContenedorBotones(contenedor)
-        frame_botones.grid(
-            row=len(componentes) + 1, column=0, columnspan=2, padx=10, pady=5, sticky="nsew"
-        )
+        frame_botones.grid(row=len(componentes) + 1, column=0, columnspan=2, padx=10, pady=5, sticky="nsew")
 
         frame_botones.agregar_boton(
             "Crear nueva sala",
             lambda: ControladorCrearSala.manejar_crear_nueva_sala(
+                componentes[AND.ID_AULA.value].get(),
                 componentes[AND.DIMENSIONES.value].get(),
                 componentes[AND.TIPO.value].get(),
             ),

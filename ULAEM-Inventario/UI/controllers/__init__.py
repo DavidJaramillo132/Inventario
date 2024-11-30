@@ -9,3 +9,4 @@ from .controlador_agregar_elemento import ControladorAgregarElemento
 from .controlador_agregar_comentario import ControladorAgregarComentario
 from .controlador_tabla_elemento import ControladorTablaElemento
 from .controlador_tabla_comentario import ControladorTablaComentario
+from .controlador_editar_elemento import ControladorEditarElemento

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from components import LabelTextoNormal, BotonPersonalizado
+from components import LabelTextoNormal
 
 class TablaComponente(ABC):
 

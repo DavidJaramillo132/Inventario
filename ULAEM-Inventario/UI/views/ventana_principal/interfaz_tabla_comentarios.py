@@ -19,7 +19,7 @@ class TablaComentario(TablaComponente):
     def mostrar_interfaz_tabla_comentarios(cls, root, idAula):
 
         frame = TopLevelPersonalizado(root)
-        frame.geometry("900x500")
+        frame.geometry("1000x500")
 
         frame.grid_columnconfigure(0, weight=1)
         frame.grid_rowconfigure(0, weight=1)
@@ -35,9 +35,7 @@ class TablaComentario(TablaComponente):
 
         # Frame para la tabla de datos usando WidgetCtk
         table_frame = ScrollableFramePersonalizado(frame)
-        table_frame.pack(
-            side="top", fill="both", expand=True, padx=10, pady=10, anchor="center"
-        )
+        table_frame.pack(side="top", fill="both", expand=True, padx=10, pady=10, anchor="center")
 
         # Centrar correctamente
         frame.pack_propagate(False)

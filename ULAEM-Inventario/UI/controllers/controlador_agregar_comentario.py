@@ -16,9 +16,7 @@ class ControladorAgregarComentario:
     @staticmethod
     @GestorErrores.decorador("Error al agregar el comentario")
     def manejar_agregar_comentario(frame, contenido, idAula):
-        print(contenido)
         contenido = contenido.strip()
-        print(contenido)
         Validador.validar_todos_campos_comentarios(contenido, idAula)
         usuario = UsuarioSingleton.get_instance()
         cedula = usuario.get_cedula()

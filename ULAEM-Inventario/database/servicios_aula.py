@@ -27,13 +27,13 @@ class ServiciosAula:
             raise Exception(f"Error al obtener aula: {str(e)}")
 
     @classmethod
-    def crear_aula(cls, dimensiones, tipo):
+    def crear_aula(cls, idAula, dimensiones, tipo):
         try:
-            if not all([dimensiones, tipo]):
+            if not all([idAula, dimensiones, tipo]):
                 raise Exception("Campos incompletos")
 
             cls.db.execute(
-                "INSERT INTO Aula(dimensiones, tipo) VALUES (?,?)", (dimensiones, tipo)
+                "INSERT INTO Aula(idAula, dimensiones, tipo) VALUES (?,?,?)", (idAula,dimensiones, tipo)
             )
             cls.db.commit()
             return True
@@ -50,3 +50,14 @@ class ServiciosAula:
         except Exception as e:
             cls.db.rollback()
             raise Exception(f"Error al eliminar aula: {str(e)}")
+        
+    @classmethod
+    def obtener_id_aula(cls, id_aula):
+        try:
+            cls.db.execute("select * FROM Aula WHERE idAula = ?", (id_aula,))
+            resultadosAulas = cls.db.fetchall()
+            if resultadosAulas:
+                raise Exception("El aula se esta repitiendo")
+            return resultadosAulas
+        except Exception as e:
+            raise Exception(f"Error al agregar aula: {str(e)}")

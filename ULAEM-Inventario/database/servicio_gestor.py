@@ -25,6 +25,16 @@ class GestorServicioSQL:
             list: Lista de aulas.
         """
         return cls.servicios_aula.obtener_aulas()
+    
+    @classmethod
+    def obtener_id_aula(cls,id_aula):
+        """
+        Obtiene todas las aulas registradas.
+
+        Returns:
+            list: Lista de aulas.
+        """
+        return cls.servicios_aula.obtener_id_aula(id_aula)
 
     @classmethod
     def obtener_aula_por_id(cls, id_aula):
@@ -40,7 +50,7 @@ class GestorServicioSQL:
         return cls.servicios_aula.obtener_aula_por_id(id_aula)
 
     @classmethod
-    def crear_aula(cls, dimensiones, tipo):
+    def crear_aula(cls,idAula, dimensiones, tipo):
         """
         Crea un aula con las dimensiones y tipo especificados.
 
@@ -51,7 +61,7 @@ class GestorServicioSQL:
         Returns:
             bool: True si la creación fue exitosa.
         """
-        return cls.servicios_aula.crear_aula(dimensiones, tipo)
+        return cls.servicios_aula.crear_aula(idAula,dimensiones, tipo)
 
     @classmethod
     def eliminar_aula(cls, id_aula):
@@ -79,6 +89,10 @@ class GestorServicioSQL:
             list: Lista de elementos del aula.
         """
         return cls.servicios_elemento.obtener_elementos_por_idaula(id_aula)
+    
+    @classmethod
+    def actualizar_elemento(cls,id_elemento,nombre, tipo, estado, fecha_adquisicion, cantidad):
+        return cls.servicios_elemento.actualizar_elemento(id_elemento,nombre, tipo, estado, fecha_adquisicion, cantidad)
 
     @classmethod
     def agregar_elemento_a_aula(cls, nombre, tipo_elemento, estado, fecha_adquisicion, cantidad, id_aula):

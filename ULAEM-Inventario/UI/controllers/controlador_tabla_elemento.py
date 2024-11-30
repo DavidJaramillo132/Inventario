@@ -1,6 +1,6 @@
 from UI.gestores import GestorNotificaciones
 from database import GestorServicioSQL
-from models.usuarios import UsuarioSingleton
+
 
 
 class ControladorTablaElemento:
@@ -18,3 +18,9 @@ class ControladorTablaElemento:
             GestorServicioSQL.eliminar_elemento_de_aula(elemento.idElemento)
             GestorNotificaciones.mostrar_info("Elemento eliminado", "El elemento ha sido eliminado con éxito")
         frame.destroy()
+
+    @staticmethod
+    def mostrar_interfaz_editar_elemento(root,frame_tabla_elemento,elemento):
+        from UI.controllers import ControladorEditarElemento
+        
+        ControladorEditarElemento.mostrar_interfaz_editar_elemento(root,frame_tabla_elemento,elemento)
