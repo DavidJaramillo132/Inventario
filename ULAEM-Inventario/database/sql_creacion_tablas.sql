@@ -1,4 +1,14 @@
--- Usar la base de datos
+-- Verificar si la base de datos 'uleam' existe, y crearla si no existe
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.databases
+    WHERE name = 'uleam'
+)
+BEGIN
+    CREATE DATABASE uleam;
+END;
+
+-- Usar la base de datos 'uleam'
 USE uleam;
 
 -- Crear tabla Usuario si no existe

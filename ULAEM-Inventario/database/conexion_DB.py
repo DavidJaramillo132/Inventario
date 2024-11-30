@@ -3,7 +3,7 @@ import pyodbc
 DRIVER = "{ODBC Driver 17 for SQL Server}"
 SERVER = "localhost"
 DATABASE = "uleamU"
-RUTA_ARCHIVO_SQL = r"database\sql_creacion_tablas.sql"
+RUTA_ARCHIVO_SQL = r"ULAEM-Inventario\database\sql_creacion_tablas.sql"
 with open(RUTA_ARCHIVO_SQL, "r") as file:
     SCRIPT_CREATE_TABLES = file.read()
 

@@ -5,7 +5,7 @@ from models.usuarios import UsuarioSingleton
 
 
 class BarraLateral(ContenedorPrincipal):
-    RUTA_LOGO_ULEAM = r"assets\img\logo_uleam.png"
+    RUTA_LOGO_ULEAM = r"ULAEM-Inventario\assets\img\logo_uleam.png"
     DIMENSIONES_LOGO_ULEAM = (100, 80)
 
     def __init__(self, root, contenedor_principal, *args, **kwargs) -> None:
