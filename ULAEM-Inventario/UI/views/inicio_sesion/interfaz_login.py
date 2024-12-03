@@ -30,7 +30,6 @@ class InterfazLogin:
     def __crear_login(root,frame_login):
         from UI.controllers import ControladorLogin, ControladorRegister
         
-
         RUTA_IMAGEN_LOGIN = r"ULAEM-Inventario\assets\img\login.png"
 
         LabelTituloSubtitulo(

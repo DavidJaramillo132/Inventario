@@ -19,7 +19,7 @@ class App:
         self.root.state("zoomed")
         self.root.configure(fg_color=Colores.get_color_principal())
 
-        self.root.geometry(f"{self.ancho}x{self.alto}+0+0")
+        self.root.geometry(f"{self.ancho}x{self.alto}")
         self.root.resizable(False, False)
 
     @GestorErrores.decorador("Error al iniciar la interfaz")

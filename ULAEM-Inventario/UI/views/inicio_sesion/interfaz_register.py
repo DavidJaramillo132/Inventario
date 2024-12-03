@@ -45,8 +45,11 @@ class InterfazRegister(FormularioRegister):
 
         # Campos a mostrar
         campos = [campo.value for campo in list(UND)]
-
-        componentes = cls._crear_campos(frame_register, campos)
+        privilegio = UsuarioSingleton.get_instance().es_administrador()
+        if privilegio == True:
+            componentes = cls._crear_campos(frame_register, campos)
+        elif privilegio == False:
+            componentes = cls._crear_campos(frame_register, campos[:6])
 
         cls._crear_botones(root, frame_register, componentes)
 
@@ -55,31 +58,42 @@ class InterfazRegister(FormularioRegister):
         from UI.controllers import ControladorLogin, ControladorRegister
         
         frame_botones = ContenedorBotones(frame_register)
-        frame_botones.grid(
-            row=len(componentes) + 1, column=0, columnspan=2, padx=10, pady=5
-        )
-        privilegio = UsuarioSingleton.get_instance().es_administrador()
-
+        frame_botones.grid(row=len(componentes) + 1, column=0, columnspan=2, padx=10, pady=5)
         
+        privilegio = UsuarioSingleton.get_instance().es_administrador()
         
         if privilegio == False:
             frame_botones.agregar_boton(
                 "Ir atras", lambda: ControladorLogin.mostrar_interfaz_login(root), columna=0
             )
-        
-
-        frame_botones.agregar_boton(
-            "Agregar",
-            lambda: ControladorRegister.manejar_crear_cuenta(
-                root,
-                componentes[UND.CEDULA.value].get(),
-                componentes[UND.NOMBRE.value].get(),
-                componentes[UND.EMAIL.value].get(),
-                componentes[UND.CONTRASENA.value].get(),
-                componentes[UND.CONFIRMAR_CONTRASENA.value].get(),
-                componentes[UND.OCUPACION.value].get(),
-                componentes[UND.PRIVILEGIOS.value].get(),
-            ),
-            columna=0 if privilegio else 1,
-            columnspan=2 if privilegio else 1,
-        )
+            frame_botones.agregar_boton(
+                "Agregar",
+                lambda: ControladorRegister.manejar_crear_cuenta(
+                    root,
+                    componentes[UND.CEDULA.value].get(),
+                    componentes[UND.NOMBRE.value].get(),
+                    componentes[UND.EMAIL.value].get(),
+                    componentes[UND.CONTRASENA.value].get(),
+                    componentes[UND.CONFIRMAR_CONTRASENA.value].get(),
+                    componentes[UND.OCUPACION.value].get(),
+                    "Sin privilegios",
+                ),
+                columna=0 if privilegio else 1,
+                columnspan=2 if privilegio else 1,
+            )
+        elif privilegio == True:
+            frame_botones.agregar_boton(
+                "Agregar",
+                lambda: ControladorRegister.manejar_crear_cuenta(
+                    root,
+                    componentes[UND.CEDULA.value].get(),
+                    componentes[UND.NOMBRE.value].get(),
+                    componentes[UND.EMAIL.value].get(),
+                    componentes[UND.CONTRASENA.value].get(),
+                    componentes[UND.CONFIRMAR_CONTRASENA.value].get(),
+                    componentes[UND.OCUPACION.value].get(),
+                    componentes[UND.PRIVILEGIOS.value].get(),
+                ),
+                columna=0 if privilegio else 1,
+                columnspan=2 if privilegio else 1,
+            )

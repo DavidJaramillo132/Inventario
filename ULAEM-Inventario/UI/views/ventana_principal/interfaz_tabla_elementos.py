@@ -18,7 +18,7 @@ class TablaElemento(TablaComponente):
     def mostrar_interfaz_tabla_elementos(cls, root, idAula):
 
         frame_tabla_elemento = TopLevelPersonalizado(root)
-        frame_tabla_elemento.geometry("1400x500")
+        frame_tabla_elemento.geometry("800x500")
 
         frame_tabla_elemento.grid_columnconfigure(0, weight=1)
         frame_tabla_elemento.grid_rowconfigure(0, weight=1)

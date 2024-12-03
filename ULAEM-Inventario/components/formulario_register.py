@@ -1,10 +1,9 @@
 from enums import PrivilegiosUsuario, OcupacionesUsuario,UsuarioNombreDatos as UND
 from abc import abstractmethod
-
+from models.usuarios import UsuarioSingleton
 from components import (
     EntryContrasena,
     EntryLabel,
-    
     ComboBoxPersonalizado,
 )
 from .formulario import Formulario
