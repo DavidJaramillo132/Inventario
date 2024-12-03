@@ -27,7 +27,7 @@ IF NOT EXISTS (
     ocupacion VARCHAR(50) NOT NULL,
     privilegios VARCHAR(255) NOT NULL
 );
-
+-- Insertar usuario admin
 END;
 
 --select * from Usuario;

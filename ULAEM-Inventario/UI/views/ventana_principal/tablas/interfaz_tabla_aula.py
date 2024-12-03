@@ -13,7 +13,6 @@ from components import (
 
 
 class TablaAula(TablaComponente):
-
     @classmethod
     @GestorErrores.decorador("Error al mostrar la tabla de aulas")
     def mostrar_interfaz_tabla_aulas(cls, root, frame_principal):

@@ -50,7 +50,10 @@ class Validador:
             ValidacionError: Si el email no tiene '@' o '.'.
         """
         if "@" not in email or "." not in email:
-            raise Validador.ValidacionError("El email debe de tener '@' y '.'")
+            raise Validador.ValidacionError("El email debe de tener '@' Y '.'")
+        if "ñ" in email or "Ñ" in email:
+            raise Validador.ValidacionError("El email no debe de tener la palabra 'ñ'")
+            
 
     @staticmethod
     def validar_cedula(cedula):
@@ -162,6 +165,7 @@ class Validador:
         Validador.validar_texto(nombre)
         Validador.validar_email(email)
         Validador.validar_contrasena(contrasena)
+        
 
     def validar_todos_campos_sala(idAula, dimensiones, tipo):
         """

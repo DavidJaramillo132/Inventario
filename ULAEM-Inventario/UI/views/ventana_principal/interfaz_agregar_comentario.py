@@ -15,7 +15,7 @@ class InterfazAgregarComentario:
     def mostrar_interfaz_agregar_comentario(cls, root, idAula):
 
         frame = TopLevelPersonalizado(root)
-        frame.geometry("600x500")
+        frame.geometry("500x500")
 
         frame.grid_columnconfigure(0, weight=1)
         frame.grid_rowconfigure(0, weight=1)
