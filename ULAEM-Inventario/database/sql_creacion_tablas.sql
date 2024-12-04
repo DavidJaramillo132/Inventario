@@ -27,10 +27,30 @@ IF NOT EXISTS (
     ocupacion VARCHAR(50) NOT NULL,
     privilegios VARCHAR(255) NOT NULL
 );
--- Insertar usuario admin
 END;
 
---select * from Usuario;
+
+
+-- Si en la tabla 'Usuario' no existe un administrador, se crea
+IF NOT EXISTS (
+    SELECT 1 
+    FROM Usuario 
+    WHERE email = 'admin@gmail.com'
+)
+BEGIN
+    INSERT INTO Usuario (cedula, nombre, email, contrasena, ocupacion, privilegios)
+    VALUES (
+        '1234567891', 
+        'administrador',
+        'admin@gmail.com',
+        'ad12', 
+        'Software',
+        'Administrador'
+    );
+END;
+
+--delete from Usuario where cedula=1234567891;
+--select * from Elemento;
 
 -- Crear tabla Aula si no existe
 IF NOT EXISTS (
@@ -45,7 +65,6 @@ IF NOT EXISTS (
     dimensiones INT NOT NULL,
     tipo VARCHAR(100) NOT NULL
 );
-
 END;
 
 -- Crear tabla Comentario si no existe
@@ -88,3 +107,5 @@ IF NOT EXISTS (
 );
 
 END;
+
+
