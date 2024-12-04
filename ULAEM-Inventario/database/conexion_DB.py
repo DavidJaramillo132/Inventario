@@ -7,7 +7,6 @@ RUTA_ARCHIVO_SQL = r"ULAEM-Inventario\database\sql_creacion_tablas.sql"
 with open(RUTA_ARCHIVO_SQL, "r") as file:
     SCRIPT_CREATE_TABLES = file.read()
 
-
 class ConexionBD:
     def __init__(self):
         try:
